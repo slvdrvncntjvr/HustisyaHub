@@ -3,8 +3,19 @@
   "module": "index.ts",
   "type": "module",
   "private": true,
+  "scripts": {
+    "dev": "bun run index.ts",
+    "init": "bun run generate.ts --init",
+    "generate": "bun run generate.ts",
+    "generate:component": "bun run generate.ts --type component",
+    "generate:hook": "bun run generate.ts --type hook",
+    "generate:util": "bun run generate.ts --type util",
+    "test": "bun test"
+  },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "@types/react": "^18.2.45",
+    "react": "^18.2.0"
   },
   "peerDependencies": {
     "typescript": "^5"
