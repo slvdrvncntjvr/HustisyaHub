@@ -5,71 +5,141 @@
 }
 
 :root {
-  --primary-color: #007bff;
-  --secondary-color: #6c757d;
-  --success-color: #28a745;
-  --danger-color: #dc3545;
-  --warning-color: #ffc107;
-  --info-color: #17a2b8;
-  --light-color: #f8f9fa;
-  --dark-color: #343a40;
-  --background-color: #ffffff;
-  --text-color: #212529;
-  --border-color: #dee2e6;
-  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  --transition-speed: 0.3s;
+  /* RightsUp Theme */
+  --primary-blue: #0066FF;
+  --primary-hover: #0052CC;
+  --text-dark: #111827;
+  --text-light: #6B7280;
+  --bg-white: #FFFFFF;
+  --bg-light: #F9FAFB;
+  --border-color: #E5E7EB;
+  
+  /* Functional Mappings */
+  --primary-color: var(--primary-blue);
+  --text-color: var(--text-dark);
+  --background-color: var(--bg-white);
+  --font-family: 'Inter', sans-serif;
+  --transition-speed: 0.2s;
 }
 
 body {
   font-family: var(--font-family);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   background-color: var(--background-color);
   color: var(--text-color);
-  line-height: 1.6;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
-
-.app {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+  line-height: 1.5;
 }
 
 .app-header {
-  background-color: var(--primary-color);
-  color: white;
-  padding: 2rem;
-  text-align: center;
+  background: white;
+  border-bottom: 1px solid var(--border-color);
+  padding: 1rem 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
-.app-main {
-  flex: 1;
-  padding: 2rem;
+.header-content {
   max-width: 1200px;
   margin: 0 auto;
-  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--text-dark);
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.nav-link {
+  color: var(--text-dark);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.nav-link:hover {
+  color: var(--primary-blue);
+}
+
+.btn-primary {
+  background-color: var(--primary-blue);
+  color: white;
+  padding: 0.6rem 1.25rem;
+  border-radius: 6px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: background-color var(--transition-speed);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-hover);
+  transform: none;
+  box-shadow: none;
+}
+
+.btn-outline {
+  background-color: transparent;
+  border: 1px solid rgba(255,255,255,0.3);
+  color: white;
+  padding: 0.6rem 1.25rem;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-outline:hover {
+  background-color: rgba(255,255,255,0.1);
 }
 
 .app-footer {
-  background-color: var(--dark-color);
-  color: white;
-  padding: 1rem;
-  text-align: center;
-  margin-top: auto;
+  background-color: white;
+  padding: 4rem 2rem 2rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 4rem;
+  margin-bottom: 4rem;
+}
+
+.footer-bottom {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  color: var(--text-light);
+  font-size: 0.875rem;
 }
 
 /* Utility classes */
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 1rem;
+  padding: 0 1.5rem;
 }
 
 .text-center {
@@ -90,3 +160,29 @@ code {
 .p-2 { padding: 1rem; }
 .p-3 { padding: 1.5rem; }
 .p-4 { padding: 2rem; }
+
+/* Buttons */
+.btn-primary {
+  background: linear-gradient(90deg, var(--cyber-teal), #00897B);
+  color: white;
+  border: none;
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all var(--transition-speed);
+  box-shadow: 0 4px 15px rgba(0, 150, 136, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 150, 136, 0.4);
+  background: linear-gradient(90deg, #00897B, var(--cyber-teal));
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
