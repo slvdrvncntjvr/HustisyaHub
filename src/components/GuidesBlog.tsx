@@ -31,7 +31,7 @@ export const GuidesBlog: React.FC = () => {
                 <h3 className="guides-item-title">{guide.title}</h3>
                 <span className="guides-date">{guide.date}</span>
               </div>
-              <button className="guides-read-more">Read More →</button>
+              <button className="guides-read-more">Read More</button>
             </div>
           ))}
         </div>
