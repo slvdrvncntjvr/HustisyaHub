@@ -1,5 +1,28 @@
+import { $ } from "bun";
 import { readFileSync } from 'fs';
 import { join } from 'path';
+
+// Cache for compiled CSS
+let cssCache: string | null = null;
+
+async function compileTailwindCSS() {
+  if (cssCache) return cssCache;
+  
+  try {
+    // Use Tailwind CLI to compile CSS
+    const proc = Bun.spawn(["bunx", "tailwindcss", "-i", "./src/styles/globals.css", "--stdout"], {
+      cwd: process.cwd(),
+    });
+    
+    const output = await new Response(proc.stdout).text();
+    cssCache = output;
+    return output;
+  } catch (error) {
+    console.error("Error compiling Tailwind CSS:", error);
+    // Fallback: return raw CSS
+    return readFileSync('./src/styles/globals.css', 'utf-8');
+  }
+}
 
 const server = Bun.serve({
   port: 3000,
@@ -17,7 +40,7 @@ const server = Bun.serve({
     // Bundle and serve the entry point (JS)
     if (url.pathname === '/bundle.js') {
       const build = await Bun.build({
-        entrypoints: ['./src/index.tsx'],
+        entrypoints: ['./src/main.tsx'],
         target: 'browser',
         minify: false,
       });
@@ -31,30 +54,11 @@ const server = Bun.serve({
       }
     }
 
-    // Manually bundle all CSS files
+    // Serve compiled Tailwind CSS
     if (url.pathname === '/bundle.css') {
       try {
-        const globalCss = readFileSync('./src/styles/globals.css', 'utf-8');
-        const missionCss = readFileSync('./src/styles/Mission.module.css', 'utf-8');
-        const featuresCss = readFileSync('./src/styles/Features.module.css', 'utf-8');
-        const guidesCss = readFileSync('./src/styles/GuidesBlog.module.css', 'utf-8');
-        
-        // Combine all CSS
-        const combinedCss = `
-/* Global Styles */
-${globalCss}
-
-/* Mission Module */
-${missionCss}
-
-/* Features Module */
-${featuresCss}
-
-/* Guides Blog Module */
-${guidesCss}
-`;
-        
-        return new Response(combinedCss, { 
+        const css = await compileTailwindCSS();
+        return new Response(css, { 
           headers: { 'Content-Type': 'text/css' } 
         });
       } catch (err) {
@@ -76,8 +80,10 @@ ${guidesCss}
       }
     }
     
-    // 404
-    return new Response('Not Found', { status: 404 });
+    // SPA Fallback: Serve index.html for any other route
+    return new Response(Bun.file('./index.html'), {
+      headers: { 'Content-Type': 'text/html' }
+    });
   },
 });
 
