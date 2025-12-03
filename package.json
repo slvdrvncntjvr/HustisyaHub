@@ -4,7 +4,8 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "bun run index.ts",
+    "dev": "bun run --hot index.ts",
+    "start": "bun run index.ts",
     "init": "bun run generate.ts --init",
     "generate": "bun run generate.ts",
     "generate:component": "bun run generate.ts --type component",
@@ -12,10 +13,14 @@
     "generate:util": "bun run generate.ts --type util",
     "test": "bun test"
   },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
   "devDependencies": {
     "@types/bun": "latest",
     "@types/react": "^18.2.45",
-    "react": "^18.2.0"
+    "@types/react-dom": "^18.2.18"
   },
   "peerDependencies": {
     "typescript": "^5"
