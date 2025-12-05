@@ -46,8 +46,8 @@ const trustPoints = [
   },
   {
     icon: Users,
-    title: "Youth-Centered",
-    description: "Designed for Filipino students with plain language and mobile-first design."
+    title: "For Filipinos",
+    description: "Designed for Filipinos with plain language and mobile-first design."
   },
   {
     icon: Zap,
@@ -66,7 +66,7 @@ export default function Home() {
             <div className="space-y-8">
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium">
                 <Shield className="h-4 w-4" />
-                Digital Rights for Filipino Youth
+                Digital Rights for Filipinos
               </div>
               
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight" data-testid="text-hero-title">
@@ -75,7 +75,7 @@ export default function Home() {
               </h1>
               
               <p className="text-lg md:text-xl text-muted-foreground max-w-xl" data-testid="text-hero-description">
-                Report violations, decode Terms of Service, and access resources designed specifically for Filipino students. 
+                Report violations, decode Terms of Service, and access resources designed specifically for Filipinos. 
                 No login. No tracking. Just help when you need it.
               </p>
 

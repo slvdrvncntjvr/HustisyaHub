@@ -14,7 +14,7 @@ export function Footer() {
               <span className="font-bold text-xl">RightsUp</span>
             </Link>
             <p className="text-muted-foreground text-sm max-w-md">
-              Empowering Filipino youth to understand, exercise, and defend their digital rights. 
+              Empowering Filipinos to understand, exercise, and defend their digital rights. 
               Free tools for reporting violations and understanding your online protections.
             </p>
           </div>

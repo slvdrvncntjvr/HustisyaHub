@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
@@ -11,6 +12,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogClose,
 } from "@/components/ui/dialog";
 import {
   Select,
@@ -35,12 +37,18 @@ import {
   Heart,
   Scale,
   Building,
-  Smartphone
+  Smartphone,
+  Edit,
+  Download,
+  RotateCcw,
+  Save
 } from "lucide-react";
 import { resources, templateDocuments, getResourcesByCategory } from "@/lib/resources-data";
 import type { Resource, TemplateDocument, PhilippineRegion } from "@shared/schema";
 import { philippineRegions } from "@shared/schema";
 import { useToast } from "@/hooks/use-toast";
+import { Document, Packer, Paragraph, TextRun } from "docx";
+import { saveAs } from "file-saver";
 
 const categoryInfo = {
   emergency: { icon: AlertTriangle, label: "Emergency Hotlines", color: "text-destructive" },
@@ -143,12 +151,42 @@ function ResourceCard({ resource }: { resource: Resource }) {
 function TemplateCard({ template }: { template: TemplateDocument }) {
   const { toast } = useToast();
   const [copied, setCopied] = useState(false);
+  const [content, setContent] = useState(template.template);
+  const [isEditing, setIsEditing] = useState(false);
 
   const copyTemplate = () => {
-    navigator.clipboard.writeText(template.template);
+    navigator.clipboard.writeText(content);
     setCopied(true);
     toast({ title: "Copied!", description: "Template copied to clipboard" });
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const downloadTemplate = async () => {
+    try {
+      const doc = new Document({
+        sections: [
+          {
+            properties: {},
+            children: content.split('\n').map(line => 
+              new Paragraph({
+                children: [new TextRun(line)],
+              })
+            ),
+          },
+        ],
+      });
+
+      const blob = await Packer.toBlob(doc);
+      saveAs(blob, `${template.title.replace(/\s+/g, '_').toLowerCase()}.docx`);
+      toast({ title: "Downloaded!", description: "Template saved as DOCX" });
+    } catch (error) {
+      console.error("Error generating DOCX:", error);
+      toast({ 
+        title: "Download Failed", 
+        description: "Could not generate the document. Please try again.",
+        variant: "destructive" 
+      });
+    }
   };
 
   const categoryLabels = {
@@ -184,28 +222,90 @@ function TemplateCard({ template }: { template: TemplateDocument }) {
               View Template
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-3xl max-h-[80vh]">
-            <DialogHeader>
-              <DialogTitle>{template.title}</DialogTitle>
-              <DialogDescription>{template.description}</DialogDescription>
-            </DialogHeader>
-            <ScrollArea className="h-[50vh] rounded-lg border p-4">
-              <pre className="text-sm whitespace-pre-wrap font-mono">{template.template}</pre>
-            </ScrollArea>
-            <div className="flex justify-end gap-2">
-              <Button variant="outline" onClick={copyTemplate}>
-                {copied ? (
-                  <>
-                    <Check className="h-4 w-4 mr-2 text-success" />
-                    Copied!
-                  </>
-                ) : (
-                  <>
-                    <Copy className="h-4 w-4 mr-2" />
-                    Copy Template
-                  </>
+          <DialogContent className="max-w-3xl max-h-[85vh] flex flex-col gap-0 p-0 overflow-hidden">
+            <div className="p-6 pb-4 border-b bg-muted/10">
+              <DialogHeader>
+                <div className="flex items-center gap-3">
+                  <div className="p-2.5 rounded-xl bg-primary/10 text-primary">
+                    <FileText className="h-6 w-6" />
+                  </div>
+                  <div className="space-y-1 text-left">
+                    <DialogTitle className="text-xl">{template.title}</DialogTitle>
+                    <DialogDescription className="text-base">{template.description}</DialogDescription>
+                  </div>
+                </div>
+              </DialogHeader>
+            </div>
+            
+            <div className="flex-1 overflow-hidden bg-muted/30 p-4 sm:p-6">
+              <ScrollArea className="h-[50vh] w-full rounded-xl border bg-background shadow-sm">
+                <div className="p-6 sm:p-8 min-h-full">
+                  {isEditing ? (
+                    <Textarea 
+                      value={content} 
+                      onChange={(e) => setContent(e.target.value)}
+                      className="min-h-[40vh] border-0 focus-visible:ring-0 resize-none p-0 text-sm sm:text-base font-mono leading-relaxed bg-transparent shadow-none"
+                      placeholder="Type your template content here..."
+                    />
+                  ) : (
+                    <pre className="text-sm sm:text-base whitespace-pre-wrap font-mono leading-relaxed text-foreground/90 selection:bg-primary/20">
+                      {content}
+                    </pre>
+                  )}
+                </div>
+              </ScrollArea>
+            </div>
+
+            <div className="p-4 border-t bg-background flex flex-col sm:flex-row justify-between gap-3">
+              <div className="flex gap-2">
+                <Button 
+                  variant={isEditing ? "secondary" : "outline"} 
+                  onClick={() => setIsEditing(!isEditing)}
+                  className="flex-1 sm:flex-none"
+                >
+                  {isEditing ? (
+                    <>
+                      <Save className="h-4 w-4 mr-2" />
+                      Done
+                    </>
+                  ) : (
+                    <>
+                      <Edit className="h-4 w-4 mr-2" />
+                      Edit
+                    </>
+                  )}
+                </Button>
+                {isEditing && (
+                  <Button 
+                    variant="ghost" 
+                    size="icon" 
+                    onClick={() => setContent(template.template)} 
+                    title="Reset to original"
+                  >
+                    <RotateCcw className="h-4 w-4" />
+                  </Button>
                 )}
-              </Button>
+              </div>
+              
+              <div className="flex gap-2">
+                <Button variant="outline" onClick={downloadTemplate} className="flex-1 sm:flex-none">
+                  <Download className="h-4 w-4 mr-2" />
+                  Download
+                </Button>
+                <Button onClick={copyTemplate} className="flex-1 sm:flex-none min-w-[140px]">
+                  {copied ? (
+                    <>
+                      <Check className="h-4 w-4 mr-2" />
+                      Copied!
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="h-4 w-4 mr-2" />
+                      Copy
+                    </>
+                  )}
+                </Button>
+              </div>
             </div>
           </DialogContent>
         </Dialog>
@@ -242,7 +342,7 @@ export default function ResourcesPage() {
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold mb-2" data-testid="text-resources-title">Resource Directory</h1>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Find emergency hotlines, legal aid organizations, and support services for Filipino youth
+            Find emergency hotlines, legal aid organizations, and support services for Filipinos
           </p>
         </div>
 
