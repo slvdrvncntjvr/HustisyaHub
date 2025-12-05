@@ -259,7 +259,7 @@ export default function ResourcesPage() {
                 <a
                   key={resource.id}
                   href={`tel:${resource.phone}`}
-                  className="flex items-center gap-3 p-4 rounded-lg bg-background border hover-elevate transition-all"
+                  className="flex items-center gap-3 p-4 rounded-lg bg-background border hover-elevate transition-all hover:border-destructive/50 hover:bg-destructive/10"
                   data-testid={`link-emergency-${resource.id}`}
                 >
                   <div className="w-10 h-10 rounded-full bg-destructive/10 flex items-center justify-center">
@@ -291,7 +291,7 @@ export default function ResourcesPage() {
               <MapPin className="h-4 w-4 mr-2 text-muted-foreground" />
               <SelectValue placeholder="Filter by region" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="max-h-[200px] shadow-xl duration-300">
               <SelectItem value="all">All Regions</SelectItem>
               {philippineRegions.map((region) => (
                 <SelectItem key={region} value={region}>

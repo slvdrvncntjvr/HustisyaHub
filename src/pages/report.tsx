@@ -332,7 +332,7 @@ export default function ReportPage() {
                         className={`p-4 rounded-lg border text-left transition-all hover-elevate ${
                           isSelected
                             ? "border-primary bg-primary/5 ring-2 ring-primary"
-                            : "border-border hover:border-primary/50"
+                            : "border-border hover:border-primary hover:bg-accent"
                         }`}
                         data-testid={`button-violation-${type}`}
                       >
@@ -364,7 +364,7 @@ export default function ReportPage() {
                         className={`p-4 rounded-lg border text-center transition-all hover-elevate ${
                           isSelected
                             ? "border-primary bg-primary/5 ring-2 ring-primary"
-                            : "border-border hover:border-primary/50"
+                            : "border-border hover:border-primary hover:bg-accent"
                         }`}
                         data-testid={`button-platform-${platform}`}
                       >
@@ -420,7 +420,7 @@ export default function ReportPage() {
                         <SelectTrigger id="region" data-testid="select-region">
                           <SelectValue placeholder="Select region" />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className="max-h-[200px] shadow-xl duration-300">
                           {philippineRegions.map((region) => (
                             <SelectItem key={region} value={region}>
                               {region}
@@ -537,7 +537,7 @@ export default function ReportPage() {
                         className={`w-full p-4 rounded-lg border text-left transition-all hover-elevate flex items-center gap-4 ${
                           isSelected
                             ? "border-primary bg-primary/5 ring-2 ring-primary"
-                            : "border-border hover:border-primary/50"
+                            : "border-border hover:border-primary hover:bg-accent"
                         }`}
                         data-testid={`button-recipient-${recipient}`}
                       >

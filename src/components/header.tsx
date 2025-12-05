@@ -18,7 +18,7 @@ export function Header() {
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between gap-4">
-          <Link href="/" className="flex items-center gap-2" data-testid="link-home">
+          <Link href="/" className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity" data-testid="link-home">
             <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-primary">
               <Shield className="h-5 w-5 text-primary-foreground" />
             </div>
@@ -30,10 +30,10 @@ export function Header() {
               const Icon = link.icon;
               const isActive = location === link.href;
               return (
-                <Link key={link.href} href={link.href}>
+                <Link key={link.href} href={link.href} className="cursor-pointer">
                   <Button
                     variant={isActive ? "secondary" : "ghost"}
-                    className="gap-2"
+                    className="gap-2 cursor-pointer"
                     data-testid={`link-nav-${link.label.toLowerCase().replace(' ', '-')}`}
                   >
                     <Icon className="h-4 w-4" />
@@ -45,8 +45,8 @@ export function Header() {
           </nav>
 
           <div className="flex items-center gap-2">
-            <Link href="/report" className="hidden sm:block">
-              <Button data-testid="button-header-report">
+            <Link href="/report" className="hidden sm:block cursor-pointer">
+              <Button data-testid="button-header-report" className="cursor-pointer">
                 <Phone className="h-4 w-4 mr-2" />
                 Get Help Now
               </Button>
@@ -72,10 +72,10 @@ export function Header() {
               const Icon = link.icon;
               const isActive = location === link.href;
               return (
-                <Link key={link.href} href={link.href} onClick={() => setMobileMenuOpen(false)}>
+                <Link key={link.href} href={link.href} onClick={() => setMobileMenuOpen(false)} className="cursor-pointer">
                   <Button
                     variant={isActive ? "secondary" : "ghost"}
-                    className="w-full justify-start gap-2"
+                    className="w-full justify-start gap-2 cursor-pointer"
                     data-testid={`link-mobile-${link.label.toLowerCase().replace(' ', '-')}`}
                   >
                     <Icon className="h-4 w-4" />
@@ -84,8 +84,8 @@ export function Header() {
                 </Link>
               );
             })}
-            <Link href="/report" onClick={() => setMobileMenuOpen(false)}>
-              <Button className="w-full mt-2" data-testid="button-mobile-report">
+            <Link href="/report" onClick={() => setMobileMenuOpen(false)} className="cursor-pointer">
+              <Button className="w-full mt-2 cursor-pointer" data-testid="button-mobile-report">
                 <Phone className="h-4 w-4 mr-2" />
                 Get Help Now
               </Button>
