@@ -111,9 +111,22 @@ export default function ReportPage() {
 
   const generatePdfMutation = useMutation({
     mutationFn: async (data: Partial<Report>) => {
-      const res = await apiRequest("POST", "/api/reports/generate-pdf", data);
+      const res = await fetch("https://hyperaphic-unannihilated-wanita.ngrok-free.dev/webhook-test/generate-report", { // <-- your ngrok URL
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": "123" // <-- your header auth
+      },
+      body: JSON.stringify(data),
+    });
+    
+    if (!res.ok) {
+      throw new Error("Failed to submit report");
+    }
       return res.json();
     },
+
+    
     onSuccess: (data) => {
       setGeneratedPdf(data.pdfUrl);
       toast({
@@ -505,7 +518,7 @@ export default function ReportPage() {
 
                 <div className="p-4 rounded-lg bg-warning/10 border border-warning/20">
                   <div className="flex gap-3">
-                    <AlertTriangle className="h-5 w-5 text-warning flex-shrink-0" />
+                    <AlertTriangle className="h-5 w-5 text-warning shrink-0" />
                     <div className="text-sm">
                       <p className="font-medium text-warning-foreground">Evidence Tips</p>
                       <ul className="mt-1 text-muted-foreground space-y-1">
