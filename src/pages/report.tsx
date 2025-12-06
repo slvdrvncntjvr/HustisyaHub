@@ -1,4 +1,17 @@
 import { useState, useCallback } from "react";
+import { 
+  Document, 
+  Packer, 
+  Paragraph, 
+  TextRun, 
+  HeadingLevel, 
+  Table, 
+  TableRow, 
+  TableCell, 
+  WidthType, 
+  BorderStyle,
+  AlignmentType
+} from "docx";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -112,21 +125,139 @@ export default function ReportPage() {
 
   const progress = (currentStep / steps.length) * 100;
 
+  const fillDemoData = () => {
+    setReportData({
+      violationType: "cyberbullying",
+      platform: "facebook",
+      description: "I have been receiving threatening messages from a user named 'BadUser123' for the past week. They are posting mean comments on my photos and sending me private messages saying they will hurt me.",
+      incidentDate: new Date().toISOString().split('T')[0],
+      perpetrator: "BadUser123",
+      evidenceFiles: [], 
+      recipients: ["school", "platform_support"],
+      contactEmail: "student@example.com",
+      contactPhone: "09123456789"
+    });
+    toast({
+      title: t("Demo Data Filled"),
+      description: t("Form populated with sample data."),
+    });
+  };
+
   const generatePdfMutation = useMutation({
     mutationFn: async (data: Partial<Report>) => {
-      const res = await fetch("https://hyperaphic-unannihilated-wanita.ngrok-free.dev/webhook-test/generate-report", { // <-- your ngrok URL
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x_api_key": "123" // <-- your header auth
-      },
-      body: JSON.stringify(data),
-    });
-    
-    if (!res.ok) {
-      throw new Error("Failed to submit report");
-    }
-      return res.json();
+      try {
+        // Helper to create labeled lines
+        const createLine = (label: string, value: string) => {
+          return new Paragraph({
+            children: [
+              new TextRun({ text: label + ": ", bold: true }),
+              new TextRun({ text: value }),
+            ],
+            spacing: { after: 120 },
+          });
+        };
+
+        // Client-side DOCX generation
+        const doc = new Document({
+          sections: [
+            {
+              properties: {},
+              children: [
+                // Header
+                new Paragraph({
+                  text: "CONFIDENTIAL INCIDENT REPORT",
+                  heading: HeadingLevel.TITLE,
+                  alignment: AlignmentType.CENTER,
+                }),
+                new Paragraph({
+                  alignment: AlignmentType.CENTER,
+                  children: [
+                    new TextRun(`Generated via RightsUp on ${new Date().toLocaleDateString()}`),
+                    new TextRun({
+                      text: "This document contains sensitive information.",
+                      break: 1,
+                      italics: true,
+                      size: 20,
+                    }),
+                  ],
+                }),
+                new Paragraph({ text: "" }), // Spacer
+                new Paragraph({ text: "" }),
+
+                // Section 1: Incident Overview
+                new Paragraph({
+                  text: "1. INCIDENT OVERVIEW",
+                  heading: HeadingLevel.HEADING_2,
+                }),
+                createLine("Violation Type", data.violationType?.toUpperCase() || "N/A"),
+                createLine("Platform", data.platform?.toUpperCase() || "N/A"),
+                createLine("Date of Incident", data.incidentDate || "N/A"),
+                new Paragraph({ text: "" }),
+
+                // Section 2: Reporter Information
+                new Paragraph({
+                  text: "2. REPORTER INFORMATION",
+                  heading: HeadingLevel.HEADING_2,
+                }),
+                createLine("Contact Email", data.contactEmail || "Not provided"),
+                createLine("Contact Phone", data.contactPhone || "Not provided"),
+                new Paragraph({ text: "" }),
+
+                // Section 3: Perpetrator Details
+                new Paragraph({
+                  text: "3. PERPETRATOR DETAILS",
+                  heading: HeadingLevel.HEADING_2,
+                }),
+                createLine("Name / Handle", data.perpetrator || "Unknown"),
+                new Paragraph({ text: "" }),
+
+                // Section 4: Statement of Facts
+                new Paragraph({
+                  text: "4. STATEMENT OF FACTS",
+                  heading: HeadingLevel.HEADING_2,
+                }),
+                new Paragraph({
+                  text: data.description || "No description provided.",
+                  alignment: AlignmentType.JUSTIFIED,
+                }),
+                new Paragraph({ text: "" }),
+
+                // Section 5: Evidence
+                new Paragraph({
+                  text: "5. EVIDENCE SUMMARY",
+                  heading: HeadingLevel.HEADING_2,
+                }),
+                new Paragraph({
+                  text: data.evidenceFiles && data.evidenceFiles.length > 0 
+                    ? `Attached Files: ${data.evidenceFiles.length} file(s) included with this report.`
+                    : "No evidence files attached.",
+                }),
+                new Paragraph({ text: "" }),
+                new Paragraph({ text: "" }),
+
+                // Footer / Disclaimer
+                new Paragraph({
+                  children: [
+                    new TextRun({
+                      text: "DISCLAIMER: This report was generated automatically based on user input. The user certifies that the information provided is true and correct to the best of their knowledge.",
+                      italics: true,
+                      size: 16, // 8pt
+                    }),
+                  ],
+                  alignment: AlignmentType.CENTER,
+                }),
+              ],
+            },
+          ],
+        });
+
+        const blob = await Packer.toBlob(doc);
+        const url = URL.createObjectURL(blob);
+        return { pdfUrl: url };
+      } catch (error) {
+        console.error("Error generating document:", error);
+        throw new Error("Failed to generate report");
+      }
     },
 
     
@@ -251,9 +382,9 @@ export default function ReportPage() {
               </div>
               <div className="flex flex-col sm:flex-row gap-3">
                 <Button className="flex-1" asChild data-testid="button-download-pdf">
-                  <a href={generatedPdf} download="incident-report.pdf">
+                  <a href={generatedPdf} download="incident-report.docx">
                     <Download className="h-4 w-4 mr-2" />
-                    {t("Download PDF")}
+                    {t("Download Report")}
                   </a>
                 </Button>
                 <Button variant="outline" className="flex-1" data-testid="button-share-report">
@@ -309,29 +440,25 @@ export default function ReportPage() {
         </div>
 
         <div className="mb-8">
-          <div className="flex items-center justify-between mb-2">
+          <div className="flex items-end justify-between mb-2">
             <span className="text-sm font-medium">{t("Step")} {currentStep} {t("of")} {steps.length}</span>
-            <span className="text-sm text-muted-foreground">{steps[currentStep - 1]?.title}</span>
+            <div className="text-right">
+              <p className="font-semibold text-primary">{steps[currentStep - 1]?.title}</p>
+              <p className="text-xs text-muted-foreground">{steps[currentStep - 1]?.description}</p>
+            </div>
           </div>
           <Progress value={progress} className="h-2" />
-          <div className="flex justify-between mt-2">
-            {steps.map((step) => (
-              <div
-                key={step.id}
-                className={`text-xs ${
-                  step.id <= currentStep ? "text-primary" : "text-muted-foreground"
-                }`}
-              >
-                {step.id === currentStep && step.description}
-              </div>
-            ))}
-          </div>
         </div>
 
         <Card>
           <CardContent className="pt-6">
             {currentStep === 1 && (
               <div className="space-y-4">
+                <div className="flex justify-end">
+                   <Button variant="ghost" size="sm" onClick={fillDemoData}>
+                     {t("Fill with Demo Data")}
+                   </Button>
+                </div>
                 <div className="text-center mb-6">
                   <h2 className="text-xl font-semibold mb-1">{t("What happened?")}</h2>
                   <p className="text-muted-foreground">{t("Select the type of violation you experienced")}</p>
@@ -523,7 +650,7 @@ export default function ReportPage() {
                   <div className="flex gap-3">
                     <AlertTriangle className="h-5 w-5 text-warning shrink-0" />
                     <div className="text-sm">
-                      <p className="font-medium text-warning-foreground">{t("Evidence Tips")}</p>
+                      <p className="font-medium text-warning">{t("Evidence Tips")}</p>
                       <ul className="mt-1 text-muted-foreground space-y-1">
                         <li>{t("Take full-page screenshots showing the date/time")}</li>
                         <li>{t("Include the perpetrator's username or profile")}</li>

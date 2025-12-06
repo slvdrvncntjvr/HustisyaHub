@@ -164,6 +164,7 @@ export const translations: Record<string, Record<string, string>> = {
   "Your report has been created. Download it or share it with the appropriate authorities.": { fil: "Nagawa na ang iyong ulat. I-download ito o ibahagi sa tamang awtoridad." },
   "Incident Report": { fil: "Ulat ng Insidente" },
   "Download PDF": { fil: "I-download ang PDF" },
+  "Download Report": { fil: "I-download ang Ulat" },
   "Share Report": { fil: "Ibahagi ang Ulat" },
   "Next Steps": { fil: "Susunod na Hakbang" },
   "Create New Report": { fil: "Gumawa ng Bagong Ulat" },
@@ -214,4 +215,14 @@ export const translations: Record<string, Record<string, string>> = {
   "Error: Unexpected API Rating": { fil: "Error: Hindi Inaasahang API Rating" },
   "The analysis was successful, but the API returned an invalid overall rating. This component cannot render the result.": { fil: "Matagumpay ang pagsusuri, ngunit nagbalik ang API ng hindi wastong pangkalahatang rating. Hindi ma-render ng component na ito ang resulta." },
   "Go Back and Try Again": { fil: "Bumalik at Subukan Muli" },
+
+  // Simulation / Demo
+  "Fill with Demo Data": { fil: "Punan ng Demo Data" },
+  "Demo Data Filled": { fil: "Napunan na ang Demo Data" },
+  "Form populated with sample data.": { fil: "Napunan ang form ng sample data." },
+  "Simulate Analysis": { fil: "Simulan ang Pagsusuri (Demo)" },
+  "Simulating...": { fil: "Nagsisimula..." },
+  "Or try a demo": { fil: "O subukan ang demo" },
+  "Simulation Complete": { fil: "Tapos na ang Simulasyon" },
+  "Generated a sample analysis for demonstration.": { fil: "Nakabuo ng sample na pagsusuri para sa demonstrasyon." },
 };

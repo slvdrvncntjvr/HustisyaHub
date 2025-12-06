@@ -26,9 +26,9 @@ const API_KEY = "123";
 type RiskLevel = "safe" | "caution" | "concerning";
 
 const riskConfig: Record<RiskLevel, { icon: React.ElementType; color: string; bg: string; label: string }> = {
-  safe: { icon: CheckCircle2, color: "text-green-600", bg: "bg-green-100", label: "Safe" }, // Improved color utility naming
-  caution: { icon: AlertTriangle, color: "text-amber-600", bg: "bg-amber-100", label: "Caution" },
-  concerning: { icon: XCircle, color: "text-red-600", bg: "bg-red-100", label: "Concerning" },
+  safe: { icon: CheckCircle2, color: "text-safe", bg: "bg-safe/10", label: "Safe" }, // Improved color utility naming
+  caution: { icon: AlertTriangle, color: "text-caution", bg: "bg-caution/10", label: "Caution" },
+  concerning: { icon: XCircle, color: "text-concerning", bg: "bg-concerning/10", label: "Concerning" },
 };
 
 function RiskBadge({ level }: { level: RiskLevel }) {
@@ -70,6 +70,63 @@ export default function TosDecoderPage() {
   const [text, setText] = useState("");
   // IMPORTANT: Cast result to TosResult | null.
   const [result, setResult] = useState<TosResult | null>(null); 
+  const [isSimulating, setIsSimulating] = useState(false);
+
+  const simulateAnalysis = () => {
+    setIsSimulating(true);
+    // Simulate network delay
+    setTimeout(() => {
+      const mockResult: TosResult = {
+        overallRating: "caution",
+        summary: "This Terms of Service agreement has some concerning clauses regarding data sharing and user content rights. While it provides standard protections, users should be aware that their data may be used for targeted advertising and shared with third-party partners.",
+        dataCollection: [
+          {
+            item: "Device Information",
+            severity: "safe",
+            explanation: "Collects standard device info for app functionality."
+          },
+          {
+            item: "Location Data",
+            severity: "caution",
+            explanation: "Tracks precise location even when app is not in use."
+          }
+        ],
+        dataSharing: [
+          {
+            item: "Third-Party Advertisers",
+            severity: "concerning",
+            explanation: "Shares personal data with advertisers for targeted ads."
+          }
+        ],
+        rightsGivenUp: [
+          {
+            item: "Class Action Waiver",
+            severity: "caution",
+            explanation: "You waive your right to join class action lawsuits."
+          },
+          {
+            item: "Content License",
+            severity: "safe",
+            explanation: "You retain ownership but grant a license to display content."
+          }
+        ],
+        verdict: "Proceed with caution. Adjust privacy settings immediately after signing up.",
+        shouldAgree: false,
+        alternatives: [
+          {
+            name: "PrivacyFirst App",
+            reason: "Does not track location or share data."
+          }
+        ]
+      };
+      setResult(mockResult);
+      setIsSimulating(false);
+      toast({
+        title: t("Simulation Complete"),
+        description: t("Generated a sample analysis for demonstration."),
+      });
+    }, 2000);
+  };
 
   const analyzeMutation = useMutation({
     mutationFn: async (data: { url?: string; text?: string }): Promise<TosResult> => {
@@ -174,16 +231,16 @@ export default function TosDecoderPage() {
                   </div>
                 </div>
                 <div className="flex items-center gap-4">
-                  <div className={`flex items-center gap-2 px-4 py-2 rounded-lg ${result.shouldAgree ? "bg-green-100" : "bg-red-100"}`}>
+                  <div className={`flex items-center gap-2 px-4 py-2 rounded-lg ${result.shouldAgree ? "bg-safe/10" : "bg-concerning/10"}`}>
                     {result.shouldAgree ? (
                       <>
-                        <ThumbsUp className="h-5 w-5 text-green-600" />
-                        <span className="font-medium text-green-600">{t("OK to Agree")}</span>
+                        <ThumbsUp className="h-5 w-5 text-safe" />
+                        <span className="font-medium text-safe">{t("OK to Agree")}</span>
                       </>
                     ) : (
                       <>
-                        <ThumbsDown className="h-5 w-5 text-red-600" />
-                        <span className="font-medium text-red-600">{t("Think Twice")}</span>
+                        <ThumbsDown className="h-5 w-5 text-concerning" />
+                        <span className="font-medium text-concerning">{t("Think Twice")}</span>
                       </>
                     )}
                   </div>
@@ -298,7 +355,7 @@ export default function TosDecoderPage() {
               <CardContent>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {result.alternatives.map((alt, index) => (
-                    <div key={index} className="p-4 rounded-lg border bg-green-50 border-green-200">
+                    <div key={index} className="p-4 rounded-lg border bg-safe/5 border-safe/20">
                       <div className="flex items-center justify-between mb-2">
                         <p className="font-medium">{alt.name}</p>
                         <ExternalLink className="h-4 w-4 text-muted-foreground" />
@@ -397,33 +454,63 @@ export default function TosDecoderPage() {
                 </>
               )}
             </Button>
+
+            <div className="relative my-4">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-background px-2 text-muted-foreground">
+                  {t("Or try a demo")}
+                </span>
+              </div>
+            </div>
+
+            <Button
+              variant="outline"
+              className="w-full"
+              onClick={simulateAnalysis}
+              disabled={isSimulating || analyzeMutation.isPending}
+            >
+              {isSimulating ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  {t("Simulating...")}
+                </>
+              ) : (
+                <>
+                  <Database className="h-4 w-4 mr-2" />
+                  {t("Simulate Analysis")}
+                </>
+              )}
+            </Button>
           </CardContent>
         </Card>
 
         {/* RISK LEGEND */}
         <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="p-4 rounded-lg bg-green-100 border border-green-200">
+          <div className="p-4 rounded-lg bg-safe/10 border border-safe/20">
             <div className="flex items-center gap-2 mb-2">
-              <CheckCircle2 className="h-5 w-5 text-green-600" />
-              <span className="font-medium text-green-600">{t("Safe")}</span>
+              <CheckCircle2 className="h-5 w-5 text-safe" />
+              <span className="font-medium text-safe">{t("Safe")}</span>
             </div>
             <p className="text-sm text-muted-foreground">
               {t("Standard practices with clear policies")}
             </p>
           </div>
-          <div className="p-4 rounded-lg bg-amber-100 border border-amber-200">
+          <div className="p-4 rounded-lg bg-caution/10 border border-caution/20">
             <div className="flex items-center gap-2 mb-2">
-              <AlertTriangle className="h-5 w-5 text-amber-600" />
-              <span className="font-medium text-amber-600">{t("Caution")}</span>
+              <AlertTriangle className="h-5 w-5 text-caution" />
+              <span className="font-medium text-caution">{t("Caution")}</span>
             </div>
             <p className="text-sm text-muted-foreground">
               {t("Some concerning clauses to consider")}
             </p>
           </div>
-          <div className="p-4 rounded-lg bg-red-100 border border-red-200">
+          <div className="p-4 rounded-lg bg-concerning/10 border border-concerning/20">
             <div className="flex items-center gap-2 mb-2">
-              <XCircle className="h-5 w-5 text-red-600" />
-              <span className="font-medium text-red-600">{t("Concerning")}</span>
+              <XCircle className="h-5 w-5 text-concerning" />
+              <span className="font-medium text-concerning">{t("Concerning")}</span>
             </div>
             <p className="text-sm text-muted-foreground">
               {t("Excessive data collection or vague policies")}
