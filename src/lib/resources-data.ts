@@ -314,6 +314,123 @@ Thank you for your attention to this matter.
 Respectfully,
 [Your Name]
 [Contact Number]`
+  },
+  {
+    id: "npc-complaint",
+    title: "NPC Data Privacy Complaint",
+    description: "Formal complaint letter to the National Privacy Commission regarding data privacy violations",
+    category: "complaint",
+    template: `[Your Name]
+[Your Address]
+[Your Email]
+[Date]
+
+National Privacy Commission
+5th Floor, Delegation Building, PICC Complex
+Pasay City, Metro Manila 1307
+
+Subject: Formal Complaint for Violation of Data Privacy Act of 2012
+
+Dear Sir/Madam,
+
+I am writing to file a formal complaint against [Name of Company/Individual] for violation of my rights under the Data Privacy Act of 2012 (Republic Act No. 10173).
+
+Details of the Respondent:
+Name: [Name of Company/Individual]
+Address: [Address if known]
+Contact Info: [Email/Phone if known]
+
+Nature of Violation:
+[Describe what happened, e.g., unauthorized processing, data breach, improper disposal of data]
+
+Timeline of Events:
+- [Date]: [Event 1]
+- [Date]: [Event 2]
+
+I have attached the following evidence:
+1. [Description of Evidence 1]
+2. [Description of Evidence 2]
+
+I request the Commission to investigate this matter and take appropriate action to protect my data privacy rights.
+
+Respectfully,
+[Your Name]
+[Contact Number]`
+  },
+  {
+    id: "school-bullying-report",
+    title: "School Bullying Report",
+    description: "Formal report to school administration regarding bullying incidents",
+    category: "complaint",
+    template: `[Your Name]
+[Your Grade/Section]
+[Date]
+
+To: [Principal/Guidance Counselor Name]
+[School Name]
+
+Subject: Report of Bullying Incident
+
+Dear Sir/Madam,
+
+I am writing to formally report incidents of bullying that I have experienced/witnessed, in accordance with the Anti-Bullying Act of 2013 (RA 10627).
+
+Details of the Incident(s):
+Date/Time: [Date and Time]
+Location: [Where it happened]
+Person(s) Involved: [Names of bullies]
+
+Description of Incident:
+[Describe exactly what happened. Be specific about words used or actions taken.]
+
+Witnesses:
+[Names of any witnesses]
+
+Impact:
+[Describe how this has affected you/the victim, e.g., fear of going to school, emotional distress]
+
+I request that the school administration investigate this matter immediately and take appropriate action to ensure my safety/the safety of the victim.
+
+Respectfully,
+[Your Name]
+[Parent/Guardian Name and Signature]`
+  },
+  {
+    id: "platform-takedown",
+    title: "Content Takedown Request",
+    description: "Request to social media platforms to remove non-consensual or harmful content",
+    category: "data_deletion",
+    template: `[Your Name]
+[Your Email]
+[Date]
+
+To: [Platform Name] Trust and Safety Team
+
+Subject: Request for Content Removal - Violation of Terms of Service/Privacy
+
+Dear Support Team,
+
+I am writing to request the immediate removal of content that violates your Community Standards and my privacy rights.
+
+Content URL(s):
+1. [Link to post/image]
+2. [Link to post/image]
+
+Reason for Removal:
+[Check one or more]
+[ ] Non-consensual sharing of intimate images (Revenge Porn)
+[ ] Harassment/Cyberbullying
+[ ] Hate Speech
+[ ] Unauthorized sharing of personal information (Doxxing)
+[ ] Impersonation
+
+Description:
+[Provide more details about why this content violates their policies and how it harms you.]
+
+This content was posted without my consent and is causing me significant distress. Please remove it immediately.
+
+Sincerely,
+[Your Name]`
   }
 ];
 

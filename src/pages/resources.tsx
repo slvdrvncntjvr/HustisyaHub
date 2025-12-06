@@ -2,18 +2,8 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-  DialogClose,
-} from "@/components/ui/dialog";
 import {
   Select,
   SelectContent,
@@ -21,7 +11,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Search,
   Phone,
@@ -30,7 +19,6 @@ import {
   Clock,
   MapPin,
   ExternalLink,
-  FileText,
   Copy,
   Check,
   AlertTriangle,
@@ -38,17 +26,11 @@ import {
   Scale,
   Building,
   Smartphone,
-  Edit,
-  Download,
-  RotateCcw,
-  Save
 } from "lucide-react";
-import { resources, templateDocuments, getResourcesByCategory } from "@/lib/resources-data";
-import type { Resource, TemplateDocument, PhilippineRegion } from "@shared/schema";
+import { resources, getResourcesByCategory } from "@/lib/resources-data";
+import type { Resource, PhilippineRegion } from "@shared/schema";
 import { philippineRegions } from "@shared/schema";
 import { useToast } from "@/hooks/use-toast";
-import { Document, Packer, Paragraph, TextRun } from "docx";
-import { saveAs } from "file-saver";
 
 const categoryInfo = {
   emergency: { icon: AlertTriangle, label: "Emergency Hotlines", color: "text-destructive" },
@@ -148,171 +130,7 @@ function ResourceCard({ resource }: { resource: Resource }) {
   );
 }
 
-function TemplateCard({ template }: { template: TemplateDocument }) {
-  const { toast } = useToast();
-  const [copied, setCopied] = useState(false);
-  const [content, setContent] = useState(template.template);
-  const [isEditing, setIsEditing] = useState(false);
 
-  const copyTemplate = () => {
-    navigator.clipboard.writeText(content);
-    setCopied(true);
-    toast({ title: "Copied!", description: "Template copied to clipboard" });
-    setTimeout(() => setCopied(false), 2000);
-  };
-
-  const downloadTemplate = async () => {
-    try {
-      const doc = new Document({
-        sections: [
-          {
-            properties: {},
-            children: content.split('\n').map(line => 
-              new Paragraph({
-                children: [new TextRun(line)],
-              })
-            ),
-          },
-        ],
-      });
-
-      const blob = await Packer.toBlob(doc);
-      saveAs(blob, `${template.title.replace(/\s+/g, '_').toLowerCase()}.docx`);
-      toast({ title: "Downloaded!", description: "Template saved as DOCX" });
-    } catch (error) {
-      console.error("Error generating DOCX:", error);
-      toast({ 
-        title: "Download Failed", 
-        description: "Could not generate the document. Please try again.",
-        variant: "destructive" 
-      });
-    }
-  };
-
-  const categoryLabels = {
-    complaint: "Complaint",
-    data_deletion: "Data Request",
-    cease_desist: "Cease & Desist",
-    foi: "FOI Request",
-  };
-
-  return (
-    <Card className="h-full hover-elevate transition-all" data-testid={`card-template-${template.id}`}>
-      <CardHeader>
-        <div className="flex items-start justify-between gap-2">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-              <FileText className="h-5 w-5 text-primary" />
-            </div>
-            <div>
-              <CardTitle className="text-base">{template.title}</CardTitle>
-              <Badge variant="outline" className="mt-1 text-xs">
-                {categoryLabels[template.category]}
-              </Badge>
-            </div>
-          </div>
-        </div>
-        <CardDescription className="mt-2">{template.description}</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button variant="outline" className="w-full">
-              <FileText className="h-4 w-4 mr-2" />
-              View Template
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="max-w-3xl max-h-[85vh] flex flex-col gap-0 p-0 overflow-hidden">
-            <div className="p-6 pb-4 border-b bg-muted/10">
-              <DialogHeader>
-                <div className="flex items-center gap-3">
-                  <div className="p-2.5 rounded-xl bg-primary/10 text-primary">
-                    <FileText className="h-6 w-6" />
-                  </div>
-                  <div className="space-y-1 text-left">
-                    <DialogTitle className="text-xl">{template.title}</DialogTitle>
-                    <DialogDescription className="text-base">{template.description}</DialogDescription>
-                  </div>
-                </div>
-              </DialogHeader>
-            </div>
-            
-            <div className="flex-1 overflow-hidden bg-muted/30 p-4 sm:p-6">
-              <ScrollArea className="h-[50vh] w-full rounded-xl border bg-background shadow-sm">
-                <div className="p-6 sm:p-8 min-h-full">
-                  {isEditing ? (
-                    <Textarea 
-                      value={content} 
-                      onChange={(e) => setContent(e.target.value)}
-                      className="min-h-[40vh] border-0 focus-visible:ring-0 resize-none p-0 text-sm sm:text-base font-mono leading-relaxed bg-transparent shadow-none"
-                      placeholder="Type your template content here..."
-                    />
-                  ) : (
-                    <pre className="text-sm sm:text-base whitespace-pre-wrap font-mono leading-relaxed text-foreground/90 selection:bg-primary/20">
-                      {content}
-                    </pre>
-                  )}
-                </div>
-              </ScrollArea>
-            </div>
-
-            <div className="p-4 border-t bg-background flex flex-col sm:flex-row justify-between gap-3">
-              <div className="flex gap-2">
-                <Button 
-                  variant={isEditing ? "secondary" : "outline"} 
-                  onClick={() => setIsEditing(!isEditing)}
-                  className="flex-1 sm:flex-none"
-                >
-                  {isEditing ? (
-                    <>
-                      <Save className="h-4 w-4 mr-2" />
-                      Done
-                    </>
-                  ) : (
-                    <>
-                      <Edit className="h-4 w-4 mr-2" />
-                      Edit
-                    </>
-                  )}
-                </Button>
-                {isEditing && (
-                  <Button 
-                    variant="ghost" 
-                    size="icon" 
-                    onClick={() => setContent(template.template)} 
-                    title="Reset to original"
-                  >
-                    <RotateCcw className="h-4 w-4" />
-                  </Button>
-                )}
-              </div>
-              
-              <div className="flex gap-2">
-                <Button variant="outline" onClick={downloadTemplate} className="flex-1 sm:flex-none">
-                  <Download className="h-4 w-4 mr-2" />
-                  Download
-                </Button>
-                <Button onClick={copyTemplate} className="flex-1 sm:flex-none min-w-[140px]">
-                  {copied ? (
-                    <>
-                      <Check className="h-4 w-4 mr-2" />
-                      Copied!
-                    </>
-                  ) : (
-                    <>
-                      <Copy className="h-4 w-4 mr-2" />
-                      Copy
-                    </>
-                  )}
-                </Button>
-              </div>
-            </div>
-          </DialogContent>
-        </Dialog>
-      </CardContent>
-    </Card>
-  );
-}
 
 export default function ResourcesPage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -340,7 +158,7 @@ export default function ResourcesPage() {
     <div className="min-h-[calc(100vh-4rem)] py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold mb-2" data-testid="text-resources-title">Resource Directory</h1>
+          <h1 className="text-3xl font-bold mb-2" data-testid="text-resources-title">Directory and Contacts</h1>
           <p className="text-muted-foreground max-w-2xl mx-auto">
             Find emergency hotlines, legal aid organizations, and support services for Filipinos
           </p>
@@ -444,17 +262,7 @@ export default function ResourcesPage() {
           </TabsContent>
         </Tabs>
 
-        <div className="mt-12">
-          <h2 className="text-2xl font-bold mb-6" data-testid="text-templates-title">Template Documents</h2>
-          <p className="text-muted-foreground mb-6">
-            Ready-to-use letter templates for common situations
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {templateDocuments.map((template) => (
-              <TemplateCard key={template.id} template={template} />
-            ))}
-          </div>
-        </div>
+
       </div>
     </div>
   );

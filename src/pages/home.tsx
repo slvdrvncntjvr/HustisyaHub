@@ -31,7 +31,7 @@ const features = [
   },
   {
     icon: BookOpen,
-    title: "Resource Directory",
+    title: "Directory and Contacts",
     description: "Find emergency hotlines, legal aid, and platform help centers specific to the Philippines.",
     href: "/resources",
     cta: "Browse Resources"
