@@ -134,6 +134,20 @@ export function Header() {
       {mobileMenuOpen && (
         <div className="md:hidden border-t border-border/50 bg-background/95 backdrop-blur-xl animate-fade-in">
           <nav className="flex flex-col p-4 gap-2">
+            {/* Learn Link */}
+            <Link href="/learn" onClick={() => setMobileMenuOpen(false)} className="cursor-pointer">
+              <Button
+                variant={location === "/learn" ? "secondary" : "ghost"}
+                className="w-full justify-start gap-3 cursor-pointer rounded-xl h-12"
+                data-testid="link-mobile-learn"
+              >
+                <GraduationCap className="h-4 w-4" />
+                {t("Learn")}
+              </Button>
+            </Link>
+            
+            <div className="my-2 border-t border-border/50" />
+            
             <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground uppercase tracking-wider">{t("Tools")}</div>
             <Link href="/report" onClick={() => setMobileMenuOpen(false)} className="cursor-pointer">
               <Button
