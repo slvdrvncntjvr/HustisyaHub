@@ -23,14 +23,14 @@ export function Header() {
   const isToolsActive = location === "/report" || location === "/tos-decoder";
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full border-b border-border/50 bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between gap-4">
-          <Link href="/" className="flex items-center gap-2 cursor-pointer rounded-md px-3 py-2 hover:bg-accent hover:text-accent-foreground transition-colors" data-testid="link-home">
-            <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-primary">
+          <Link href="/" className="flex items-center gap-2.5 cursor-pointer rounded-xl px-3 py-2 hover:bg-accent/50 transition-all duration-300" data-testid="link-home">
+            <div className="flex items-center justify-center w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-primary/80 shadow-md shadow-primary/20">
               <Shield className="h-5 w-5 text-primary-foreground" />
             </div>
-            <span className="font-bold text-xl hidden sm:block">{t("RightsUp")}</span>
+            <span className="font-bold text-xl hidden sm:block tracking-tight">{t("RightsUp")}</span>
           </Link>
 
           <nav className="hidden md:flex items-center gap-1">
@@ -103,7 +103,7 @@ export function Header() {
 
           <div className="flex items-center gap-2">
             <Link href="/report" className="hidden sm:block cursor-pointer">
-              <Button data-testid="button-header-report" className="cursor-pointer">
+              <Button data-testid="button-header-report" className="cursor-pointer shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/30 transition-all duration-300">
                 <Phone className="h-4 w-4 mr-2" />
                 {t("Get Help Now")}
               </Button>
@@ -111,7 +111,7 @@ export function Header() {
             <Button
               variant="ghost"
               size="sm"
-              className="hidden sm:flex w-9 px-0"
+              className="hidden sm:flex w-9 px-0 rounded-xl hover:bg-accent/70 transition-colors"
               onClick={() => setLanguage(language === "en" ? "fil" : "en")}
               title={language === "en" ? "Switch to Filipino" : "Switch to English"}
             >
@@ -121,7 +121,7 @@ export function Header() {
             <Button
               variant="ghost"
               size="icon"
-              className="md:hidden"
+              className="md:hidden rounded-xl"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               data-testid="button-mobile-menu"
             >
@@ -132,13 +132,13 @@ export function Header() {
       </div>
 
       {mobileMenuOpen && (
-        <div className="md:hidden border-t bg-background">
+        <div className="md:hidden border-t border-border/50 bg-background/95 backdrop-blur-xl animate-fade-in">
           <nav className="flex flex-col p-4 gap-2">
-            <div className="px-2 py-1.5 text-sm font-semibold text-muted-foreground">{t("Tools")}</div>
+            <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground uppercase tracking-wider">{t("Tools")}</div>
             <Link href="/report" onClick={() => setMobileMenuOpen(false)} className="cursor-pointer">
               <Button
                 variant={location === "/report" ? "secondary" : "ghost"}
-                className="w-full justify-start gap-2 cursor-pointer pl-6"
+                className="w-full justify-start gap-3 cursor-pointer pl-4 rounded-xl h-12"
               >
                 <FileText className="h-4 w-4" />
                 {t("Create Report")}
@@ -147,14 +147,14 @@ export function Header() {
             <Link href="/tos-decoder" onClick={() => setMobileMenuOpen(false)} className="cursor-pointer">
               <Button
                 variant={location === "/tos-decoder" ? "secondary" : "ghost"}
-                className="w-full justify-start gap-2 cursor-pointer pl-6"
+                className="w-full justify-start gap-3 cursor-pointer pl-4 rounded-xl h-12"
               >
                 <Search className="h-4 w-4" />
                 {t("ToS Decoder")}
               </Button>
             </Link>
             
-            <div className="my-1 border-t" />
+            <div className="my-2 border-t border-border/50" />
             
             {navLinks.map((link) => {
               const Icon = link.icon;
@@ -163,7 +163,7 @@ export function Header() {
                 <Link key={link.href} href={link.href} onClick={() => setMobileMenuOpen(false)} className="cursor-pointer">
                   <Button
                     variant={isActive ? "secondary" : "ghost"}
-                    className="w-full justify-start gap-2 cursor-pointer"
+                    className="w-full justify-start gap-3 cursor-pointer rounded-xl h-12"
                     data-testid={`link-mobile-${link.label.toLowerCase().replace(' ', '-')}`}
                   >
                     <Icon className="h-4 w-4" />
@@ -173,17 +173,17 @@ export function Header() {
               );
             })}
             <Link href="/report" onClick={() => setMobileMenuOpen(false)} className="cursor-pointer">
-              <Button className="w-full mt-2 cursor-pointer" data-testid="button-mobile-report">
+              <Button className="w-full mt-3 cursor-pointer rounded-xl h-12 shadow-md shadow-primary/20" data-testid="button-mobile-report">
                 <Phone className="h-4 w-4 mr-2" />
                 {t("Get Help Now")}
               </Button>
             </Link>
             <Button
               variant="ghost"
-              className="w-full justify-start gap-2 cursor-pointer"
+              className="w-full justify-start gap-3 cursor-pointer rounded-xl h-12 mt-1"
               onClick={() => setLanguage(language === "en" ? "fil" : "en")}
             >
-              <span className="font-bold text-xs mr-2">{language === "en" ? "FIL" : "EN"}</span>
+              <span className="font-bold text-xs">{language === "en" ? "FIL" : "EN"}</span>
               {language === "en" ? "Switch to Filipino" : "Switch to English"}
             </Button>
           </nav>

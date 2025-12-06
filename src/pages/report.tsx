@@ -430,24 +430,34 @@ export default function ReportPage() {
   }
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] py-8">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2" data-testid="text-report-title">{t("Smart Report Builder")}</h1>
-          <p className="text-muted-foreground">
-            {t("Create a professional incident report step by step")}
-          </p>
+    <div className="min-h-[calc(100vh-4rem)] py-8 relative">
+      {/* Background decoration */}
+      <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent pointer-events-none" />
+      
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 relative">
+        <div className="mb-8 animate-fade-in-up">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center shadow-lg shadow-primary/20">
+              <FileText className="h-6 w-6 text-primary-foreground" />
+            </div>
+            <div>
+              <h1 className="text-3xl font-bold" data-testid="text-report-title">{t("Smart Report Builder")}</h1>
+              <p className="text-muted-foreground">
+                {t("Create a professional incident report step by step")}
+              </p>
+            </div>
+          </div>
         </div>
 
-        <div className="mb-8">
-          <div className="flex items-end justify-between mb-2">
-            <span className="text-sm font-medium">{t("Step")} {currentStep} {t("of")} {steps.length}</span>
+        <div className="mb-8 p-4 rounded-2xl bg-card/50 backdrop-blur-sm border border-border/50">
+          <div className="flex items-end justify-between mb-3">
+            <span className="text-sm font-medium text-muted-foreground">{t("Step")} {currentStep} {t("of")} {steps.length}</span>
             <div className="text-right">
               <p className="font-semibold text-primary">{steps[currentStep - 1]?.title}</p>
               <p className="text-xs text-muted-foreground">{steps[currentStep - 1]?.description}</p>
             </div>
           </div>
-          <Progress value={progress} className="h-2" />
+          <Progress value={progress} className="h-2.5 rounded-full" />
         </div>
 
         <Card>

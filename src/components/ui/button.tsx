@@ -5,7 +5,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 cursor-pointer" +
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 cursor-pointer transition-all duration-200" +
   " hover-elevate active-elevate-2",
   {
     variants: {
@@ -17,17 +17,17 @@ const buttonVariants = cva(
         outline:
           // Inherits Background
           // Inherits Text
-          " border [border-color:var(--button-outline)]  shadow-xs active:shadow-none hover:bg-accent hover:text-accent-foreground",
+          " border [border-color:var(--button-outline)] shadow-xs active:shadow-none hover:bg-accent hover:text-accent-foreground hover:border-accent",
         secondary: "border bg-secondary text-secondary-foreground border border-secondary-border hover:bg-secondary/80",
         // Transparent Border
-        ghost: "border border-transparent hover:bg-accent hover:text-accent-foreground",
+        ghost: "border border-transparent hover:bg-accent/70 hover:text-accent-foreground",
       },
       // Min Heights
       size: {
-        default: "min-h-9 px-4 py-2",
-        sm: "min-h-8 rounded-md px-3 text-xs",
-        lg: "min-h-10 rounded-md px-8",
-        icon: "h-9 w-9",
+        default: "min-h-10 px-5 py-2.5",
+        sm: "min-h-8 rounded-lg px-3.5 text-xs",
+        lg: "min-h-12 rounded-xl px-8 text-base",
+        icon: "h-10 w-10",
       },
     },
     defaultVariants: {

@@ -206,56 +206,80 @@ function TemplateCard({ template }: { template: TemplateDocument }) {
 export default function LearnPage() {
   const { t } = useLanguage();
   return (
-    <div className="min-h-[calc(100vh-4rem)] py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center p-3 rounded-full bg-primary/10 text-primary mb-4">
-            <GraduationCap className="h-8 w-8" />
+    <div className="min-h-[calc(100vh-4rem)] py-8 relative">
+      {/* Background decoration */}
+      <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent pointer-events-none" />
+      <div className="absolute top-20 right-10 w-72 h-72 bg-primary/5 rounded-full blur-3xl animate-pulse-soft" />
+      
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+        <div className="text-center mb-12 animate-fade-in-up">
+          <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-primary to-primary/70 text-primary-foreground mb-5 shadow-xl shadow-primary/20">
+            <GraduationCap className="h-10 w-10" />
           </div>
-          <h1 className="text-4xl font-bold mb-4" data-testid="text-learn-title">{t("Legal Knowledge Base")}</h1>
+          <h1 className="text-4xl md:text-5xl font-bold mb-4" data-testid="text-learn-title">{t("Legal Knowledge Base")}</h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             {t("Empower yourself with legal templates and guides to protect your digital rights.")}
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          <Card className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 border-blue-100 dark:border-blue-900">
-            <CardHeader>
-              <Scale className="h-8 w-8 text-blue-600 mb-2" />
-              <CardTitle>{t("Digital Rights")}</CardTitle>
-              <CardDescription>
+          <Card className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30 border-blue-200/50 dark:border-blue-800/50 shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-500" />
+            <CardHeader className="relative">
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center mb-3 shadow-lg shadow-blue-500/20">
+                <Scale className="h-7 w-7 text-white" />
+              </div>
+              <CardTitle className="text-xl">{t("Digital Rights")}</CardTitle>
+              <CardDescription className="text-base">
                 {t("Fundamental rights for every digital citizen")}
               </CardDescription>
             </CardHeader>
-            <CardContent>
-              <ul className="list-disc list-inside space-y-2 text-sm sm:text-base text-muted-foreground">
-                <li>{t("Right to freedom of expression")}</li>
-                <li>{t("Right to privacy")}</li>
-                <li>{t("Right to credit for personal works")}</li>
-                <li>{t("Right to digital access")}</li>
-                <li>{t("Right to our identity")}</li>
-                <li>{t("Right to assemble")}</li>
+            <CardContent className="relative">
+              <ul className="space-y-3 text-sm sm:text-base text-muted-foreground">
+                {[
+                  "Right to freedom of expression",
+                  "Right to privacy",
+                  "Right to credit for personal works",
+                  "Right to digital access",
+                  "Right to our identity",
+                  "Right to assemble"
+                ].map((right, index) => (
+                  <li key={index} className="flex items-start gap-3">
+                    <span className="w-2 h-2 rounded-full bg-blue-500 mt-2 shrink-0"></span>
+                    <span>{t(right)}</span>
+                  </li>
+                ))}
               </ul>
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20 border-purple-100 dark:border-purple-900">
-            <CardHeader>
-              <Shield className="h-8 w-8 text-purple-600 mb-2" />
-              <CardTitle>{t("Digital Responsibilities")}</CardTitle>
-              <CardDescription>
+          <Card className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/30 dark:to-pink-950/30 border-purple-200/50 dark:border-purple-800/50 shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-500" />
+            <CardHeader className="relative">
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center mb-3 shadow-lg shadow-purple-500/20">
+                <Shield className="h-7 w-7 text-white" />
+              </div>
+              <CardTitle className="text-xl">{t("Digital Responsibilities")}</CardTitle>
+              <CardDescription className="text-base">
                 {t("Duties to ensure a safe digital environment")}
               </CardDescription>
             </CardHeader>
-            <CardContent>
-              <ul className="list-disc list-inside space-y-2 text-sm sm:text-base text-muted-foreground">
-                <li>{t("Responsibility to report bullying, harassing, sexting, or identity theft")}</li>
-                <li>{t("Responsibility to cite works used for resources and researching")}</li>
-                <li>{t("Responsibility to download music, videos, and other materials legally")}</li>
-                <li>{t("Responsibility to model and teach students expectations of technology use")}</li>
-                <li>{t("Responsibility to keep data/information safe from hackers")}</li>
-                <li>{t("Responsibility not to falsify your identity in any way")}</li>
-                <li>{t("Responsibility to comply with legislation, regulations, code of conduct and best practices")}</li>
+            <CardContent className="relative">
+              <ul className="space-y-3 text-sm sm:text-base text-muted-foreground">
+                {[
+                  "Responsibility to report bullying, harassing, sexting, or identity theft",
+                  "Responsibility to cite works used for resources and researching",
+                  "Responsibility to download music, videos, and other materials legally",
+                  "Responsibility to model and teach students expectations of technology use",
+                  "Responsibility to keep data/information safe from hackers",
+                  "Responsibility not to falsify your identity in any way",
+                  "Responsibility to comply with legislation, regulations, code of conduct and best practices"
+                ].map((responsibility, index) => (
+                  <li key={index} className="flex items-start gap-3">
+                    <span className="w-2 h-2 rounded-full bg-purple-500 mt-2 shrink-0"></span>
+                    <span>{t(responsibility)}</span>
+                  </li>
+                ))}
               </ul>
             </CardContent>
           </Card>

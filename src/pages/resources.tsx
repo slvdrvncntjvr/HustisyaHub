@@ -157,16 +157,22 @@ export default function ResourcesPage() {
   const emergencyResources = getResourcesByCategory("emergency");
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold mb-2" data-testid="text-resources-title">{t("Directory and Contacts")}</h1>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
+    <div className="min-h-[calc(100vh-4rem)] py-8 relative">
+      {/* Background decoration */}
+      <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent pointer-events-none" />
+      
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+        <div className="text-center mb-8 animate-fade-in-up">
+          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center mx-auto mb-4 shadow-lg shadow-primary/20">
+            <Phone className="h-8 w-8 text-primary-foreground" />
+          </div>
+          <h1 className="text-3xl md:text-4xl font-bold mb-3" data-testid="text-resources-title">{t("Directory and Contacts")}</h1>
+          <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
             {t("Find emergency hotlines, legal aid organizations, and support services for Filipinos")}
           </p>
         </div>
 
-        <Card className="mb-8 bg-destructive/5 border-destructive/20">
+        <Card className="mb-8 bg-gradient-to-br from-destructive/5 to-destructive/10 border-destructive/20 shadow-lg">
           <CardHeader className="pb-3">
             <CardTitle className="flex items-center gap-2 text-lg">
               <AlertTriangle className="h-5 w-5 text-destructive" />
