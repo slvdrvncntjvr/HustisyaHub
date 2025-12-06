@@ -115,7 +115,7 @@ export default function ReportPage() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "x-api-key": "123" // <-- your header auth
+        "x_api_key": "123" // <-- your header auth
       },
       body: JSON.stringify(data),
     });

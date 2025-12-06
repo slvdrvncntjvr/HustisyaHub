@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/popover";
 
 const navLinks = [
-  { href: "/learn", label: "Learn", icon: GraduationCap },
   { href: "/resources", label: "Directory and Contacts", icon: BookOpen },
 ];
 
@@ -33,6 +32,17 @@ export function Header() {
           </Link>
 
           <nav className="hidden md:flex items-center gap-1">
+            <Link href="/learn" className="cursor-pointer">
+              <Button
+                variant={location === "/learn" ? "secondary" : "ghost"}
+                className="gap-2 cursor-pointer"
+                data-testid="link-nav-learn"
+              >
+                <GraduationCap className="h-4 w-4" />
+                Learn
+              </Button>
+            </Link>
+
             <Popover open={toolsOpen} onOpenChange={setToolsOpen}>
               <PopoverTrigger asChild>
                 <Button
