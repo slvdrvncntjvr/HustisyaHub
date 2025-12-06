@@ -135,4 +135,5 @@ export interface TemplateDocument {
   description: string;
   category: "complaint" | "data_deletion" | "cease_desist" | "foi";
   template: string;
+  templateFil?: string;
 }

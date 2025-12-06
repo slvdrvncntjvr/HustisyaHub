@@ -8,15 +8,17 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-
-const navLinks = [
-  { href: "/resources", label: "Directory and Contacts", icon: BookOpen },
-];
+import { useLanguage } from "@/components/language-provider";
 
 export function Header() {
   const [location] = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [toolsOpen, setToolsOpen] = useState(false);
+  const { language, setLanguage, t } = useLanguage();
+
+  const navLinks = [
+    { href: "/resources", label: "Directory and Contacts", icon: BookOpen },
+  ];
 
   const isToolsActive = location === "/report" || location === "/tos-decoder";
 
@@ -28,7 +30,7 @@ export function Header() {
             <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-primary">
               <Shield className="h-5 w-5 text-primary-foreground" />
             </div>
-            <span className="font-bold text-xl hidden sm:block">RightsUp</span>
+            <span className="font-bold text-xl hidden sm:block">{t("RightsUp")}</span>
           </Link>
 
           <nav className="hidden md:flex items-center gap-1">
@@ -39,7 +41,7 @@ export function Header() {
                 data-testid="link-nav-learn"
               >
                 <GraduationCap className="h-4 w-4" />
-                Learn
+                {t("Learn")}
               </Button>
             </Link>
 
@@ -51,7 +53,7 @@ export function Header() {
                   data-testid="nav-tools"
                 >
                   <Wrench className="h-4 w-4" />
-                  Tools
+                  {t("Tools")}
                   <ChevronDown className={`h-4 w-4 transition-transform ${toolsOpen ? "rotate-180" : ""}`} />
                 </Button>
               </PopoverTrigger>
@@ -64,7 +66,7 @@ export function Header() {
                       onClick={() => setToolsOpen(false)}
                     >
                       <FileText className="h-4 w-4" />
-                      Create Report
+                      {t("Create Report")}
                     </Button>
                   </Link>
                   <Link href="/tos-decoder">
@@ -74,7 +76,7 @@ export function Header() {
                       onClick={() => setToolsOpen(false)}
                     >
                       <Search className="h-4 w-4" />
-                      ToS Decoder
+                      {t("ToS Decoder")}
                     </Button>
                   </Link>
                 </div>
@@ -92,7 +94,7 @@ export function Header() {
                     data-testid={`link-nav-${link.label.toLowerCase().replace(' ', '-')}`}
                   >
                     <Icon className="h-4 w-4" />
-                    {link.label}
+                    {t(link.label)}
                   </Button>
                 </Link>
               );
@@ -103,9 +105,18 @@ export function Header() {
             <Link href="/report" className="hidden sm:block cursor-pointer">
               <Button data-testid="button-header-report" className="cursor-pointer">
                 <Phone className="h-4 w-4 mr-2" />
-                Get Help Now
+                {t("Get Help Now")}
               </Button>
             </Link>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="hidden sm:flex w-9 px-0"
+              onClick={() => setLanguage(language === "en" ? "fil" : "en")}
+              title={language === "en" ? "Switch to Filipino" : "Switch to English"}
+            >
+              <span className="font-bold text-xs">{language === "en" ? "FIL" : "EN"}</span>
+            </Button>
             <ThemeToggle />
             <Button
               variant="ghost"
@@ -123,14 +134,14 @@ export function Header() {
       {mobileMenuOpen && (
         <div className="md:hidden border-t bg-background">
           <nav className="flex flex-col p-4 gap-2">
-            <div className="px-2 py-1.5 text-sm font-semibold text-muted-foreground">Tools</div>
+            <div className="px-2 py-1.5 text-sm font-semibold text-muted-foreground">{t("Tools")}</div>
             <Link href="/report" onClick={() => setMobileMenuOpen(false)} className="cursor-pointer">
               <Button
                 variant={location === "/report" ? "secondary" : "ghost"}
                 className="w-full justify-start gap-2 cursor-pointer pl-6"
               >
                 <FileText className="h-4 w-4" />
-                Create Report
+                {t("Create Report")}
               </Button>
             </Link>
             <Link href="/tos-decoder" onClick={() => setMobileMenuOpen(false)} className="cursor-pointer">
@@ -139,7 +150,7 @@ export function Header() {
                 className="w-full justify-start gap-2 cursor-pointer pl-6"
               >
                 <Search className="h-4 w-4" />
-                ToS Decoder
+                {t("ToS Decoder")}
               </Button>
             </Link>
             
@@ -156,7 +167,7 @@ export function Header() {
                     data-testid={`link-mobile-${link.label.toLowerCase().replace(' ', '-')}`}
                   >
                     <Icon className="h-4 w-4" />
-                    {link.label}
+                    {t(link.label)}
                   </Button>
                 </Link>
               );
@@ -164,9 +175,17 @@ export function Header() {
             <Link href="/report" onClick={() => setMobileMenuOpen(false)} className="cursor-pointer">
               <Button className="w-full mt-2 cursor-pointer" data-testid="button-mobile-report">
                 <Phone className="h-4 w-4 mr-2" />
-                Get Help Now
+                {t("Get Help Now")}
               </Button>
             </Link>
+            <Button
+              variant="ghost"
+              className="w-full justify-start gap-2 cursor-pointer"
+              onClick={() => setLanguage(language === "en" ? "fil" : "en")}
+            >
+              <span className="font-bold text-xs mr-2">{language === "en" ? "FIL" : "EN"}</span>
+              {language === "en" ? "Switch to Filipino" : "Switch to English"}
+            </Button>
           </nav>
         </div>
       )}

@@ -49,14 +49,7 @@ import {
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
-
-const steps = [
-  { id: 1, title: "Type", description: "What happened?" },
-  { id: 2, title: "Platform", description: "Where?" },
-  { id: 3, title: "Details", description: "Tell us more" },
-  { id: 4, title: "Evidence", description: "Upload proof" },
-  { id: 5, title: "Submit", description: "Choose recipients" },
-];
+import { useLanguage } from "@/components/language-provider";
 
 const violationInfo: Record<ViolationType, { icon: React.ElementType; label: string; description: string }> = {
   cyberbullying: { icon: MessageSquare, label: "Cyberbullying", description: "Repeated online harassment, insults, or humiliation" },
@@ -100,6 +93,16 @@ interface EvidenceFile {
 
 export default function ReportPage() {
   const { toast } = useToast();
+  const { t } = useLanguage();
+  
+  const steps = [
+    { id: 1, title: t("Type"), description: t("What happened?") },
+    { id: 2, title: t("Platform"), description: t("Where?") },
+    { id: 3, title: t("Details"), description: t("Tell us more") },
+    { id: 4, title: t("Evidence"), description: t("Upload proof") },
+    { id: 5, title: t("Submit"), description: t("Choose recipients") },
+  ];
+
   const [currentStep, setCurrentStep] = useState(1);
   const [reportData, setReportData] = useState<Partial<Report>>({
     recipients: [],
@@ -130,14 +133,14 @@ export default function ReportPage() {
     onSuccess: (data) => {
       setGeneratedPdf(data.pdfUrl);
       toast({
-        title: "Report Generated!",
-        description: "Your report has been created successfully.",
+        title: t("Report Generated!"),
+        description: t("Your report has been created successfully."),
       });
     },
     onError: () => {
       toast({
-        title: "Error",
-        description: "Failed to generate report. Please try again.",
+        title: t("Error"),
+        description: t("Failed to generate report. Please try again."),
         variant: "destructive",
       });
     },
@@ -150,8 +153,8 @@ export default function ReportPage() {
     Array.from(files).forEach((file) => {
       if (file.size > 10 * 1024 * 1024) {
         toast({
-          title: "File too large",
-          description: `${file.name} is larger than 10MB`,
+          title: t("File too large"),
+          description: `${file.name} ${t("is larger than 10MB")}`,
           variant: "destructive",
         });
         return;
@@ -230,9 +233,9 @@ export default function ReportPage() {
             <div className="w-16 h-16 rounded-full bg-success/10 flex items-center justify-center mx-auto mb-4">
               <Check className="h-8 w-8 text-success" />
             </div>
-            <CardTitle className="text-2xl" data-testid="text-report-success">Report Generated Successfully</CardTitle>
+            <CardTitle className="text-2xl" data-testid="text-report-success">{t("Report Generated Successfully")}</CardTitle>
             <CardDescription className="text-base">
-              Your report has been created. Download it or share it with the appropriate authorities.
+              {t("Your report has been created. Download it or share it with the appropriate authorities.")}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
@@ -240,9 +243,9 @@ export default function ReportPage() {
               <div className="flex items-center gap-4 mb-4">
                 <FileText className="h-10 w-10 text-primary" />
                 <div>
-                  <p className="font-medium">Incident Report</p>
+                  <p className="font-medium">{t("Incident Report")}</p>
                   <p className="text-sm text-muted-foreground">
-                    {violationInfo[reportData.violationType as ViolationType]?.label} on {platformInfo[reportData.platform as Platform]?.label}
+                    {t(violationInfo[reportData.violationType as ViolationType]?.label)} {t("on")} {platformInfo[reportData.platform as Platform]?.label}
                   </p>
                 </div>
               </div>
@@ -250,25 +253,25 @@ export default function ReportPage() {
                 <Button className="flex-1" asChild data-testid="button-download-pdf">
                   <a href={generatedPdf} download="incident-report.pdf">
                     <Download className="h-4 w-4 mr-2" />
-                    Download PDF
+                    {t("Download PDF")}
                   </a>
                 </Button>
                 <Button variant="outline" className="flex-1" data-testid="button-share-report">
                   <Share2 className="h-4 w-4 mr-2" />
-                  Share Report
+                  {t("Share Report")}
                 </Button>
               </div>
             </div>
 
             <div>
-              <h3 className="font-semibold mb-3">Next Steps</h3>
+              <h3 className="font-semibold mb-3">{t("Next Steps")}</h3>
               <ul className="space-y-3 text-sm">
                 {reportData.recipients?.map((recipient) => (
                   <li key={recipient} className="flex items-start gap-3 p-3 rounded-lg bg-muted/50">
                     <Check className="h-4 w-4 text-success mt-0.5" />
                     <div>
-                      <p className="font-medium">{recipientInfo[recipient].label}</p>
-                      <p className="text-muted-foreground">{recipientInfo[recipient].description}</p>
+                      <p className="font-medium">{t(recipientInfo[recipient].label)}</p>
+                      <p className="text-muted-foreground">{t(recipientInfo[recipient].description)}</p>
                     </div>
                   </li>
                 ))}
@@ -286,7 +289,7 @@ export default function ReportPage() {
                 }}
                 data-testid="button-new-report"
               >
-                Create New Report
+                {t("Create New Report")}
               </Button>
             </div>
           </CardContent>
@@ -299,15 +302,15 @@ export default function ReportPage() {
     <div className="min-h-[calc(100vh-4rem)] py-8">
       <div className="max-w-3xl mx-auto px-4 sm:px-6">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2" data-testid="text-report-title">Smart Report Builder</h1>
+          <h1 className="text-3xl font-bold mb-2" data-testid="text-report-title">{t("Smart Report Builder")}</h1>
           <p className="text-muted-foreground">
-            Create a professional incident report step by step
+            {t("Create a professional incident report step by step")}
           </p>
         </div>
 
         <div className="mb-8">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium">Step {currentStep} of {steps.length}</span>
+            <span className="text-sm font-medium">{t("Step")} {currentStep} {t("of")} {steps.length}</span>
             <span className="text-sm text-muted-foreground">{steps[currentStep - 1]?.title}</span>
           </div>
           <Progress value={progress} className="h-2" />
@@ -330,8 +333,8 @@ export default function ReportPage() {
             {currentStep === 1 && (
               <div className="space-y-4">
                 <div className="text-center mb-6">
-                  <h2 className="text-xl font-semibold mb-1">What happened?</h2>
-                  <p className="text-muted-foreground">Select the type of violation you experienced</p>
+                  <h2 className="text-xl font-semibold mb-1">{t("What happened?")}</h2>
+                  <p className="text-muted-foreground">{t("Select the type of violation you experienced")}</p>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                   {violationTypes.map((type) => {
@@ -350,8 +353,8 @@ export default function ReportPage() {
                         data-testid={`button-violation-${type}`}
                       >
                         <Icon className={`h-6 w-6 mb-2 ${isSelected ? "text-primary" : "text-muted-foreground"}`} />
-                        <p className="font-medium text-sm">{info.label}</p>
-                        <p className="text-xs text-muted-foreground mt-1">{info.description}</p>
+                        <p className="font-medium text-sm">{t(info.label)}</p>
+                        <p className="text-xs text-muted-foreground mt-1">{t(info.description)}</p>
                       </button>
                     );
                   })}
@@ -362,8 +365,8 @@ export default function ReportPage() {
             {currentStep === 2 && (
               <div className="space-y-4">
                 <div className="text-center mb-6">
-                  <h2 className="text-xl font-semibold mb-1">Where did it happen?</h2>
-                  <p className="text-muted-foreground">Select the platform where the incident occurred</p>
+                  <h2 className="text-xl font-semibold mb-1">{t("Where did it happen?")}</h2>
+                  <p className="text-muted-foreground">{t("Select the platform where the incident occurred")}</p>
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                   {platforms.map((platform) => {
@@ -393,29 +396,29 @@ export default function ReportPage() {
             {currentStep === 3 && (
               <div className="space-y-6">
                 <div className="text-center mb-6">
-                  <h2 className="text-xl font-semibold mb-1">Tell us what happened</h2>
-                  <p className="text-muted-foreground">Provide details about the incident</p>
+                  <h2 className="text-xl font-semibold mb-1">{t("Tell us what happened")}</h2>
+                  <p className="text-muted-foreground">{t("Provide details about the incident")}</p>
                 </div>
                 
                 <div className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="description">Description *</Label>
+                    <Label htmlFor="description">{t("Description")} *</Label>
                     <Textarea
                       id="description"
-                      placeholder="Describe what happened in detail. Include who was involved, what they did, and how it affected you..."
+                      placeholder={t("Describe what happened in detail. Include who was involved, what they did, and how it affected you...")}
                       className="min-h-32"
                       value={reportData.description || ""}
                       onChange={(e) => setReportData({ ...reportData, description: e.target.value })}
                       data-testid="input-description"
                     />
                     <p className="text-xs text-muted-foreground">
-                      {(reportData.description?.length || 0)} / 10 minimum characters
+                      {(reportData.description?.length || 0)} / 10 {t("minimum characters")}
                     </p>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="incident-date">When did it happen?</Label>
+                      <Label htmlFor="incident-date">{t("When did it happen?")}</Label>
                       <Input
                         id="incident-date"
                         type="date"
@@ -425,13 +428,13 @@ export default function ReportPage() {
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="region">Your Region</Label>
+                      <Label htmlFor="region">{t("Your Region")}</Label>
                       <Select
                         value={reportData.region}
                         onValueChange={(value) => setReportData({ ...reportData, region: value as PhilippineRegion })}
                       >
                         <SelectTrigger id="region" data-testid="select-region">
-                          <SelectValue placeholder="Select region" />
+                          <SelectValue placeholder={t("Select region")} />
                         </SelectTrigger>
                         <SelectContent className="max-h-[200px] shadow-xl duration-300">
                           {philippineRegions.map((region) => (
@@ -445,10 +448,10 @@ export default function ReportPage() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="perpetrator">Perpetrator Info (optional)</Label>
+                    <Label htmlFor="perpetrator">{t("Perpetrator Info (optional)")}</Label>
                     <Input
                       id="perpetrator"
-                      placeholder="Username, account name, or any identifying information"
+                      placeholder={t("Username, account name, or any identifying information")}
                       value={reportData.perpetratorInfo || ""}
                       onChange={(e) => setReportData({ ...reportData, perpetratorInfo: e.target.value })}
                       data-testid="input-perpetrator"
@@ -461,8 +464,8 @@ export default function ReportPage() {
             {currentStep === 4 && (
               <div className="space-y-6">
                 <div className="text-center mb-6">
-                  <h2 className="text-xl font-semibold mb-1">Upload Evidence</h2>
-                  <p className="text-muted-foreground">Add screenshots or other proof (optional but recommended)</p>
+                  <h2 className="text-xl font-semibold mb-1">{t("Upload Evidence")}</h2>
+                  <p className="text-muted-foreground">{t("Add screenshots or other proof (optional but recommended)")}</p>
                 </div>
 
                 <div className="border-2 border-dashed rounded-lg p-8 text-center hover:border-primary/50 transition-colors">
@@ -477,16 +480,16 @@ export default function ReportPage() {
                   />
                   <label htmlFor="evidence" className="cursor-pointer">
                     <Upload className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                    <p className="font-medium mb-1">Click to upload files</p>
+                    <p className="font-medium mb-1">{t("Click to upload files")}</p>
                     <p className="text-sm text-muted-foreground">
-                      PNG, JPG, or PDF up to 10MB each
+                      {t("PNG, JPG, or PDF up to 10MB each")}
                     </p>
                   </label>
                 </div>
 
                 {reportData.evidenceFiles && reportData.evidenceFiles.length > 0 && (
                   <div className="space-y-2">
-                    <Label>Uploaded Files</Label>
+                    <Label>{t("Uploaded Files")}</Label>
                     <div className="space-y-2">
                       {reportData.evidenceFiles.map((file, index) => (
                         <div
@@ -520,11 +523,11 @@ export default function ReportPage() {
                   <div className="flex gap-3">
                     <AlertTriangle className="h-5 w-5 text-warning shrink-0" />
                     <div className="text-sm">
-                      <p className="font-medium text-warning-foreground">Evidence Tips</p>
+                      <p className="font-medium text-warning-foreground">{t("Evidence Tips")}</p>
                       <ul className="mt-1 text-muted-foreground space-y-1">
-                        <li>Take full-page screenshots showing the date/time</li>
-                        <li>Include the perpetrator's username or profile</li>
-                        <li>Save URLs of posts or messages</li>
+                        <li>{t("Take full-page screenshots showing the date/time")}</li>
+                        <li>{t("Include the perpetrator's username or profile")}</li>
+                        <li>{t("Save URLs of posts or messages")}</li>
                       </ul>
                     </div>
                   </div>
@@ -535,8 +538,8 @@ export default function ReportPage() {
             {currentStep === 5 && (
               <div className="space-y-6">
                 <div className="text-center mb-6">
-                  <h2 className="text-xl font-semibold mb-1">Who should receive this report?</h2>
-                  <p className="text-muted-foreground">Select one or more recipients</p>
+                  <h2 className="text-xl font-semibold mb-1">{t("Who should receive this report?")}</h2>
+                  <p className="text-muted-foreground">{t("Select one or more recipients")}</p>
                 </div>
 
                 <div className="space-y-3">
@@ -556,8 +559,8 @@ export default function ReportPage() {
                       >
                         <Checkbox checked={isSelected} className="pointer-events-none" />
                         <div>
-                          <p className="font-medium">{info.label}</p>
-                          <p className="text-sm text-muted-foreground">{info.description}</p>
+                          <p className="font-medium">{t(info.label)}</p>
+                          <p className="text-sm text-muted-foreground">{t(info.description)}</p>
                         </div>
                       </button>
                     );
@@ -566,22 +569,22 @@ export default function ReportPage() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
                   <div className="space-y-2">
-                    <Label htmlFor="contact-email">Your Email (optional)</Label>
+                    <Label htmlFor="contact-email">{t("Your Email (optional)")}</Label>
                     <Input
                       id="contact-email"
                       type="email"
-                      placeholder="For follow-up communications"
+                      placeholder={t("For follow-up communications")}
                       value={reportData.contactEmail || ""}
                       onChange={(e) => setReportData({ ...reportData, contactEmail: e.target.value })}
                       data-testid="input-email"
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="contact-phone">Your Phone (optional)</Label>
+                    <Label htmlFor="contact-phone">{t("Your Phone (optional)")}</Label>
                     <Input
                       id="contact-phone"
                       type="tel"
-                      placeholder="For urgent matters"
+                      placeholder={t("For urgent matters")}
                       value={reportData.contactPhone || ""}
                       onChange={(e) => setReportData({ ...reportData, contactPhone: e.target.value })}
                       data-testid="input-phone"
@@ -601,7 +604,7 @@ export default function ReportPage() {
             data-testid="button-back"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Back
+            {t("Back")}
           </Button>
           <Button
             onClick={handleNext}
@@ -609,15 +612,15 @@ export default function ReportPage() {
             data-testid="button-next"
           >
             {generatePdfMutation.isPending ? (
-              "Generating..."
+              t("Generating...")
             ) : currentStep === steps.length ? (
               <>
-                Generate Report
+                {t("Generate Report")}
                 <FileText className="h-4 w-4 ml-2" />
               </>
             ) : (
               <>
-                Continue
+                {t("Continue")}
                 <ArrowRight className="h-4 w-4 ml-2" />
               </>
             )}

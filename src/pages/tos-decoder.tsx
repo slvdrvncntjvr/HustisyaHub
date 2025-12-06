@@ -14,6 +14,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/components/language-provider";
 
 // --- API and Type Configuration ---
 // Note: TosResult is assumed to define the expected API response structure
@@ -31,28 +32,30 @@ const riskConfig: Record<RiskLevel, { icon: React.ElementType; color: string; bg
 };
 
 function RiskBadge({ level }: { level: RiskLevel }) {
+  const { t } = useLanguage();
   const config = riskConfig[level];
   const Icon = config.icon;
   return (
     <Badge variant="outline" className={`${config.bg} ${config.color} border-0`}>
       <Icon className="h-3 w-3 mr-1" />
-      {config.label}
+      {t(config.label)}
     </Badge>
   );
 }
 
 // --- Error Component for Invalid API Response ---
 function InvalidResponseError({ onReset }: { onReset: () => void }) {
+    const { t } = useLanguage();
     return (
         <div className="text-center p-12 max-w-lg mx-auto bg-card rounded-lg shadow-lg mt-10 border border-destructive/50">
             <AlertTriangle className="h-10 w-10 mx-auto text-destructive mb-4" />
-            <h2 className="text-xl font-bold text-destructive mb-2">Error: Unexpected API Rating</h2>
+            <h2 className="text-xl font-bold text-destructive mb-2">{t("Error: Unexpected API Rating")}</h2>
             <p className="text-muted-foreground mb-6">
-                The analysis was successful, but the API returned an invalid overall rating. This component cannot render the result.
+                {t("The analysis was successful, but the API returned an invalid overall rating. This component cannot render the result.")}
             </p>
             <Button onClick={onReset} className="mt-4" variant="destructive">
                 <ArrowRight className="h-4 w-4 mr-2 rotate-180" />
-                Go Back and Try Again
+                {t("Go Back and Try Again")}
             </Button>
         </div>
     );
@@ -61,6 +64,7 @@ function InvalidResponseError({ onReset }: { onReset: () => void }) {
 
 export default function TosDecoderPage() {
   const { toast } = useToast();
+  const { t } = useLanguage();
   const [inputType, setInputType] = useState<"url" | "text">("text");
   const [url, setUrl] = useState("");
   const [text, setText] = useState("");
@@ -94,8 +98,8 @@ export default function TosDecoderPage() {
     onError: (error) => {
       console.error("Analysis error:", error);
       toast({
-        title: "Analysis Failed",
-        description: error instanceof Error ? error.message : "Could not analyze the Terms of Service. Please check the network connection.",
+        title: t("Analysis Failed"),
+        description: error instanceof Error ? error.message : t("Could not analyze the Terms of Service. Please check the network connection."),
         variant: "destructive",
       });
       // Ensure the result is null on error to show the input form
@@ -121,8 +125,8 @@ export default function TosDecoderPage() {
     const summary = `ToS Analysis Summary:\n\nOverall Rating: ${result.overallRating}\n\n${result.summary}\n\nVerdict: ${result.verdict}`;
     navigator.clipboard.writeText(summary);
     toast({
-      title: "Copied!",
-      description: "Summary copied to clipboard",
+      title: t("Copied!"),
+      description: t("Summary copied to clipboard"),
     });
   };
 
@@ -152,7 +156,7 @@ export default function TosDecoderPage() {
             data-testid="button-back-to-input"
           >
             <ArrowRight className="h-4 w-4 mr-2 rotate-180" />
-            Analyze Another
+            {t("Analyze Another")}
           </Button>
 
           <Card className={`mb-8 ${overallConfig.bg} border-0`}>
@@ -163,9 +167,9 @@ export default function TosDecoderPage() {
                     <OverallIcon className={`h-8 w-8 ${overallConfig.color}`} />
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground mb-1">Overall Rating</p>
+                    <p className="text-sm text-muted-foreground mb-1">{t("Overall Rating")}</p>
                     <h2 className={`text-2xl font-bold ${overallConfig.color}`} data-testid="text-tos-rating">
-                      {overallConfig.label}
+                      {t(overallConfig.label)}
                     </h2>
                   </div>
                 </div>
@@ -174,12 +178,12 @@ export default function TosDecoderPage() {
                     {result.shouldAgree ? (
                       <>
                         <ThumbsUp className="h-5 w-5 text-green-600" />
-                        <span className="font-medium text-green-600">OK to Agree</span>
+                        <span className="font-medium text-green-600">{t("OK to Agree")}</span>
                       </>
                     ) : (
                       <>
                         <ThumbsDown className="h-5 w-5 text-red-600" />
-                        <span className="font-medium text-red-600">Think Twice</span>
+                        <span className="font-medium text-red-600">{t("Think Twice")}</span>
                       </>
                     )}
                   </div>
@@ -193,7 +197,7 @@ export default function TosDecoderPage() {
 
           <Card className="mb-6">
             <CardHeader>
-              <CardTitle className="text-lg">Summary</CardTitle>
+              <CardTitle className="text-lg">{t("Summary")}</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground" data-testid="text-tos-summary">{result.summary}</p>
@@ -206,7 +210,7 @@ export default function TosDecoderPage() {
               <AccordionTrigger className="hover:no-underline">
                 <div className="flex items-center gap-3">
                   <Database className="h-5 w-5 text-primary" />
-                  <span className="font-semibold">What Data They Collect</span>
+                  <span className="font-semibold">{t("What Data They Collect")}</span>
                   <Badge variant="secondary" className="ml-2">{result.dataCollection.length}</Badge>
                 </div>
               </AccordionTrigger>
@@ -231,7 +235,7 @@ export default function TosDecoderPage() {
               <AccordionTrigger className="hover:no-underline">
                 <div className="flex items-center gap-3">
                   <Share2 className="h-5 w-5 text-primary" />
-                  <span className="font-semibold">Who They Share With</span>
+                  <span className="font-semibold">{t("Who They Share With")}</span>
                   <Badge variant="secondary" className="ml-2">{result.dataSharing.length}</Badge>
                 </div>
               </AccordionTrigger>
@@ -255,7 +259,7 @@ export default function TosDecoderPage() {
               <AccordionTrigger className="hover:no-underline">
                 <div className="flex items-center gap-3">
                   <Shield className="h-5 w-5 text-primary" />
-                  <span className="font-semibold">Rights You're Giving Up</span>
+                  <span className="font-semibold">{t("Rights You're Giving Up")}</span>
                   <Badge variant="secondary" className="ml-2">{result.rightsGivenUp.length}</Badge>
                 </div>
               </AccordionTrigger>
@@ -277,7 +281,7 @@ export default function TosDecoderPage() {
 
           <Card className="mt-6">
             <CardHeader>
-              <CardTitle className="text-lg">Our Verdict</CardTitle>
+              <CardTitle className="text-lg">{t("Our Verdict")}</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground" data-testid="text-tos-verdict">{result.verdict}</p>
@@ -288,8 +292,8 @@ export default function TosDecoderPage() {
           {result.alternatives && result.alternatives.length > 0 && (
             <Card className="mt-6">
               <CardHeader>
-                <CardTitle className="text-lg">Better Alternatives</CardTitle>
-                <CardDescription>Consider these privacy-friendly options</CardDescription>
+                <CardTitle className="text-lg">{t("Better Alternatives")}</CardTitle>
+                <CardDescription>{t("Consider these privacy-friendly options")}</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -319,9 +323,9 @@ export default function TosDecoderPage() {
           <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
             <Search className="h-8 w-8 text-primary" />
           </div>
-          <h1 className="text-3xl font-bold mb-2" data-testid="text-tos-title">ToS Decoder</h1>
+          <h1 className="text-3xl font-bold mb-2" data-testid="text-tos-title">{t("ToS Decoder")}</h1>
           <p className="text-muted-foreground max-w-xl mx-auto">
-            Paste any Terms of Service and get a plain-English breakdown of what you're actually agreeing to
+            {t("Paste any Terms of Service and get a plain-English breakdown of what you're actually agreeing to")}
           </p>
         </div>
 
@@ -331,34 +335,34 @@ export default function TosDecoderPage() {
               <TabsList className="grid w-full grid-cols-2 mb-6">
                 <TabsTrigger value="text" data-testid="tab-text">
                   <FileText className="h-4 w-4 mr-2" />
-                  Paste Text
+                  {t("Paste Text")}
                 </TabsTrigger>
                 <TabsTrigger value="url" data-testid="tab-url">
                   <ExternalLink className="h-4 w-4 mr-2" />
-                  Enter URL
+                  {t("Enter URL")}
                 </TabsTrigger>
               </TabsList>
 
               <TabsContent value="text" className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="tos-text">Terms of Service Text</Label>
+                  <Label htmlFor="tos-text">{t("Terms of Service Text")}</Label>
                   <Textarea
                     id="tos-text"
-                    placeholder="Paste the Terms of Service text here... (minimum 50 characters)"
+                    placeholder={t("Paste the Terms of Service text here... (minimum 50 characters)")}
                     className="min-h-48"
                     value={text}
                     onChange={(e) => setText(e.target.value)}
                     data-testid="input-tos-text"
                   />
                   <p className="text-xs text-muted-foreground">
-                    {text.length} / 50 minimum characters
+                    {text.length} / 50 {t("minimum characters")}
                   </p>
                 </div>
               </TabsContent>
 
               <TabsContent value="url" className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="tos-url">Terms of Service URL</Label>
+                  <Label htmlFor="tos-url">{t("Terms of Service URL")}</Label>
                   <Input
                     id="tos-url"
                     type="url"
@@ -368,7 +372,7 @@ export default function TosDecoderPage() {
                     data-testid="input-tos-url"
                   />
                   <p className="text-xs text-muted-foreground">
-                    Enter the direct link to the Terms of Service page
+                    {t("Enter the direct link to the Terms of Service page")}
                   </p>
                 </div>
               </TabsContent>
@@ -384,12 +388,12 @@ export default function TosDecoderPage() {
               {analyzeMutation.isPending ? (
                 <>
                   <Loader2 className="h-5 w-5 mr-2 animate-spin" />
-                  Analyzing...
+                  {t("Analyzing...")}
                 </>
               ) : (
                 <>
                   <Search className="h-5 w-5 mr-2" />
-                  Analyze ToS
+                  {t("Analyze ToS")}
                 </>
               )}
             </Button>
@@ -401,28 +405,28 @@ export default function TosDecoderPage() {
           <div className="p-4 rounded-lg bg-green-100 border border-green-200">
             <div className="flex items-center gap-2 mb-2">
               <CheckCircle2 className="h-5 w-5 text-green-600" />
-              <span className="font-medium text-green-600">Safe</span>
+              <span className="font-medium text-green-600">{t("Safe")}</span>
             </div>
             <p className="text-sm text-muted-foreground">
-              Standard practices with clear policies
+              {t("Standard practices with clear policies")}
             </p>
           </div>
           <div className="p-4 rounded-lg bg-amber-100 border border-amber-200">
             <div className="flex items-center gap-2 mb-2">
               <AlertTriangle className="h-5 w-5 text-amber-600" />
-              <span className="font-medium text-amber-600">Caution</span>
+              <span className="font-medium text-amber-600">{t("Caution")}</span>
             </div>
             <p className="text-sm text-muted-foreground">
-              Some concerning clauses to consider
+              {t("Some concerning clauses to consider")}
             </p>
           </div>
           <div className="p-4 rounded-lg bg-red-100 border border-red-200">
             <div className="flex items-center gap-2 mb-2">
               <XCircle className="h-5 w-5 text-red-600" />
-              <span className="font-medium text-red-600">Concerning</span>
+              <span className="font-medium text-red-600">{t("Concerning")}</span>
             </div>
             <p className="text-sm text-muted-foreground">
-              Excessive data collection or vague policies
+              {t("Excessive data collection or vague policies")}
             </p>
           </div>
         </div>

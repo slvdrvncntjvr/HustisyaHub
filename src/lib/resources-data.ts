@@ -274,7 +274,41 @@ This is my only warning. If the harassment continues, I will:
 
 I have preserved evidence of all your actions and will use them in any legal proceedings.
 
-[Your Name]`
+[Your Name]`,
+    templateFil: `[Iyong Pangalan]
+[Iyong Address]
+[Petsa]
+
+PARA KAY: [Pangalan ng Nangha-harass]
+[Address ng Nangha-harass kung alam]
+
+PAUNAWA NG PAGTIGIL (CEASE AND DESIST NOTICE)
+
+Ang liham na ito ay nagsisilbing pormal na paunawa na ang iyong mga aksyon ay itinuturing na harassment sa ilalim ng batas ng Pilipinas, partikular ang:
+- Cybercrime Prevention Act of 2012 (Republic Act No. 10175)
+- Anti-Bullying Act of 2013 (Republic Act No. 10627)
+- Safe Spaces Act (Republic Act No. 11313)
+
+Partikular, ginawa mo ang mga sumusunod:
+[Ilista ang mga mapang-abusong pag-uugali - mga mensahe, post, pagbabanta, atbp.]
+
+Nangyari ang mga aksyong ito noong: [Mga Petsa]
+Sa mga sumusunod na platform: [Mga Platform]
+
+HINIHILING KO NA AGAD MONG:
+1. Itigil ang lahat ng pakikipag-ugnayan sa akin
+2. Itigil ang pag-post tungkol sa akin o pagbabahagi ng nilalaman na may kaugnayan sa akin
+3. Tanggalin ang lahat ng umiiral na post, komento, o nilalaman tungkol sa akin
+4. Itigil ang pakikipag-ugnayan sa aking mga kaibigan, pamilya, o kasamahan tungkol sa akin
+
+Ito na ang aking huling babala. Kung magpapatuloy ang harassment, ako ay:
+1. Maghahain ng pormal na reklamo sa NBI Cybercrime Division
+2. Maghahain ng pormal na reklamo sa PNP Anti-Cybercrime Group
+3. Magsasagawa ng legal na aksyon kabilang ang mga kasong kriminal
+
+Naitago ko ang ebidensya ng lahat ng iyong mga aksyon at gagamitin ko ang mga ito sa anumang legal na paglilitis.
+
+[Iyong Pangalan]`
   },
   {
     id: "foi-request",
@@ -313,7 +347,40 @@ Thank you for your attention to this matter.
 
 Respectfully,
 [Your Name]
-[Contact Number]`
+[Contact Number]`,
+    templateFil: `[Iyong Pangalan]
+[Iyong Address]
+[Iyong Email]
+[Petsa]
+
+Para sa: [Pangalan ng Ahensya ng Gobyerno]
+[Address ng Ahensya]
+
+Paksa: Kahilingan para sa Impormasyon sa ilalim ng Executive Order No. 2, s. 2016 (Freedom of Information)
+
+Mahal na Ginoo/Ginang,
+
+Alinsunod sa Executive Order No. 2, serye ng 2016, na nag-uutos ng buong pagsisiwalat sa publiko ng impormasyon ng gobyerno, hinihiling ko ang sumusunod na impormasyon:
+
+[Ilarawan ang impormasyong hinihiling mo, hal.:
+- Mga rekord ng data breaches na nakaapekto sa mga mamamayan
+- Mga patakaran sa privacy at pamamaraan ng paghawak ng data
+- Mga reklamong inihain tungkol sa mga paglabag sa data privacy]
+
+Layunin ng Kahilingan:
+[Ipaliwanag kung bakit mo kailangan ang impormasyong ito]
+
+Gustong Format:
+[ ] Electronic copy sa pamamagitan ng email
+[ ] Pisikal na kopya (Sasagutin ko ang gastos sa pagpaparami)
+
+Sa ilalim ng EO 2, kinakailangan ninyong tumugon sa kahilingang ito sa loob ng labinlimang (15) araw ng trabaho. Kung hindi maibibigay ang impormasyon, pakibanggit ang partikular na exemption na naaangkop.
+
+Salamat sa inyong atensyon sa bagay na ito.
+
+Gumagalang,
+[Iyong Pangalan]
+[Numero ng Telepono]`
   },
   {
     id: "npc-complaint",
@@ -355,7 +422,43 @@ I request the Commission to investigate this matter and take appropriate action 
 
 Respectfully,
 [Your Name]
-[Contact Number]`
+[Contact Number]`,
+    templateFil: `[Iyong Pangalan]
+[Iyong Address]
+[Iyong Email]
+[Petsa]
+
+National Privacy Commission
+5th Floor, Delegation Building, PICC Complex
+Pasay City, Metro Manila 1307
+
+Paksa: Pormal na Reklamo sa Paglabag sa Data Privacy Act of 2012
+
+Mahal na Ginoo/Ginang,
+
+Sumusulat ako upang maghain ng pormal na reklamo laban kay [Pangalan ng Kumpanya/Indibidwal] dahil sa paglabag sa aking mga karapatan sa ilalim ng Data Privacy Act of 2012 (Republic Act No. 10173).
+
+Detalye ng Inirereklamo:
+Pangalan: [Pangalan ng Kumpanya/Indibidwal]
+Address: [Address kung alam]
+Impormasyon sa Pakikipag-ugnayan: [Email/Telepono kung alam]
+
+Uri ng Paglabag:
+[Ilarawan ang nangyari, hal., hindi awtorisadong pagproseso, data breach, maling pagtatapon ng data]
+
+Pagkakasunod-sunod ng mga Pangyayari:
+- [Petsa]: [Pangyayari 1]
+- [Petsa]: [Pangyayari 2]
+
+Kalakip ko ang mga sumusunod na ebidensya:
+1. [Paglalarawan ng Ebidensya 1]
+2. [Paglalarawan ng Ebidensya 2]
+
+Hinihiling ko sa Komisyon na imbestigahan ang bagay na ito at gumawa ng kaukulang aksyon upang protektahan ang aking mga karapatan sa data privacy.
+
+Gumagalang,
+[Iyong Pangalan]
+[Numero ng Telepono]`
   },
   {
     id: "school-bullying-report",
@@ -393,7 +496,39 @@ I request that the school administration investigate this matter immediately and
 
 Respectfully,
 [Your Name]
-[Parent/Guardian Name and Signature]`
+[Parent/Guardian Name and Signature]`,
+    templateFil: `[Iyong Pangalan]
+[Iyong Baitang/Seksyon]
+[Petsa]
+
+Para kay: [Pangalan ng Principal/Guidance Counselor]
+[Pangalan ng Paaralan]
+
+Paksa: Ulat ng Insidente ng Bullying
+
+Mahal na Ginoo/Ginang,
+
+Sumusulat ako upang pormal na iulat ang mga insidente ng bullying na aking naranasan/nasaksihan, alinsunod sa Anti-Bullying Act of 2013 (RA 10627).
+
+Detalye ng (mga) Insidente:
+Petsa/Oras: [Petsa at Oras]
+Lugar: [Kung saan nangyari]
+(Mga) Taong Sangkot: [Pangalan ng mga nambu-bully]
+
+Paglalarawan ng Insidente:
+[Ilarawan nang eksakto ang nangyari. Maging tiyak sa mga salitang ginamit o aksyong ginawa.]
+
+Mga Saksi:
+[Pangalan ng mga saksi]
+
+Epekto:
+[Ilarawan kung paano ito nakaapekto sa iyo/sa biktima, hal., takot pumasok sa paaralan, emosyonal na pagkabalisa]
+
+Hinihiling ko na imbestigahan ng administrasyon ng paaralan ang bagay na ito kaagad at gumawa ng kaukulang aksyon upang matiyak ang aking kaligtasan/ang kaligtasan ng biktima.
+
+Gumagalang,
+[Iyong Pangalan]
+[Pangalan at Lagda ng Magulang/Tagapag-alaga]`
   },
   {
     id: "platform-takedown",
@@ -430,7 +565,38 @@ Description:
 This content was posted without my consent and is causing me significant distress. Please remove it immediately.
 
 Sincerely,
-[Your Name]`
+[Your Name]`,
+    templateFil: `[Iyong Pangalan]
+[Iyong Email]
+[Petsa]
+
+Para sa: [Pangalan ng Platform] Trust and Safety Team
+
+Paksa: Kahilingan para sa Pagtanggal ng Nilalaman - Paglabag sa Terms of Service/Privacy
+
+Mahal na Support Team,
+
+Sumusulat ako upang hilingin ang agarang pagtanggal ng nilalaman na lumalabag sa inyong Community Standards at sa aking mga karapatan sa privacy.
+
+URL ng Nilalaman:
+1. [Link sa post/image]
+2. [Link sa post/image]
+
+Dahilan ng Pagtanggal:
+[Pumili ng isa o higit pa]
+[ ] Hindi awtorisadong pagbabahagi ng maseselang larawan (Revenge Porn)
+[ ] Harassment/Cyberbullying
+[ ] Hate Speech
+[ ] Hindi awtorisadong pagbabahagi ng personal na impormasyon (Doxxing)
+[ ] Pagpapanggap (Impersonation)
+
+Paglalarawan:
+[Magbigay ng karagdagang detalye kung bakit lumalabag ang nilalamang ito sa kanilang mga patakaran at paano ito nakakasama sa iyo.]
+
+Ang nilalamang ito ay nai-post nang walang pahintulot ko at nagdudulot sa akin ng matinding pagkabalisa. Pakiusap na tanggalin ito kaagad.
+
+Sumasainyo,
+[Iyong Pangalan]`
   }
 ];
 

@@ -31,6 +31,7 @@ import { resources, getResourcesByCategory } from "@/lib/resources-data";
 import type { Resource, PhilippineRegion } from "@shared/schema";
 import { philippineRegions } from "@shared/schema";
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/components/language-provider";
 
 const categoryInfo = {
   emergency: { icon: AlertTriangle, label: "Emergency Hotlines", color: "text-destructive" },
@@ -40,7 +41,7 @@ const categoryInfo = {
   platform_help: { icon: Smartphone, label: "Platform Help", color: "text-green-500" },
 };
 
-function ResourceCard({ resource }: { resource: Resource }) {
+function ResourceCard({ resource, t }: { resource: Resource, t: (s: string) => string }) {
   const { toast } = useToast();
   const [copied, setCopied] = useState(false);
   const catInfo = categoryInfo[resource.category];
@@ -50,7 +51,7 @@ function ResourceCard({ resource }: { resource: Resource }) {
     if (resource.phone) {
       navigator.clipboard.writeText(resource.phone);
       setCopied(true);
-      toast({ title: "Copied!", description: "Phone number copied to clipboard" });
+      toast({ title: t("Copied!"), description: t("Phone number copied to clipboard") });
       setTimeout(() => setCopied(false), 2000);
     }
   };
@@ -66,14 +67,14 @@ function ResourceCard({ resource }: { resource: Resource }) {
             <div>
               <CardTitle className="text-base">{resource.name}</CardTitle>
               <Badge variant="secondary" className="mt-1 text-xs">
-                {catInfo.label}
+                {t(catInfo.label)}
               </Badge>
             </div>
           </div>
         </div>
       </CardHeader>
       <CardContent className="space-y-3">
-        <p className="text-sm text-muted-foreground line-clamp-2">{resource.description}</p>
+        <p className="text-sm text-muted-foreground line-clamp-2">{t(resource.description)}</p>
 
         {resource.phone && (
           <div className="flex items-center justify-between p-3 rounded-lg bg-muted/50">
@@ -96,7 +97,7 @@ function ResourceCard({ resource }: { resource: Resource }) {
               className="flex items-center gap-1 text-muted-foreground hover:text-primary"
             >
               <Mail className="h-3 w-3" />
-              Email
+              {t("Email")}
             </a>
           )}
           {resource.website && (
@@ -107,7 +108,7 @@ function ResourceCard({ resource }: { resource: Resource }) {
               className="flex items-center gap-1 text-muted-foreground hover:text-primary"
             >
               <Globe className="h-3 w-3" />
-              Website
+              {t("Website")}
               <ExternalLink className="h-3 w-3" />
             </a>
           )}
@@ -136,6 +137,7 @@ export default function ResourcesPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedRegion, setSelectedRegion] = useState<PhilippineRegion | "all">("all");
   const [activeTab, setActiveTab] = useState("all");
+  const { t } = useLanguage();
 
   const filteredResources = resources.filter((resource) => {
     const matchesSearch =
@@ -158,9 +160,9 @@ export default function ResourcesPage() {
     <div className="min-h-[calc(100vh-4rem)] py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold mb-2" data-testid="text-resources-title">Directory and Contacts</h1>
+          <h1 className="text-3xl font-bold mb-2" data-testid="text-resources-title">{t("Directory and Contacts")}</h1>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Find emergency hotlines, legal aid organizations, and support services for Filipinos
+            {t("Find emergency hotlines, legal aid organizations, and support services for Filipinos")}
           </p>
         </div>
 
@@ -168,7 +170,7 @@ export default function ResourcesPage() {
           <CardHeader className="pb-3">
             <CardTitle className="flex items-center gap-2 text-lg">
               <AlertTriangle className="h-5 w-5 text-destructive" />
-              Emergency Hotlines
+              {t("Emergency Hotlines")}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -197,7 +199,7 @@ export default function ResourcesPage() {
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
-              placeholder="Search resources..."
+              placeholder={t("Search resources...")}
               className="pl-10"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -207,10 +209,10 @@ export default function ResourcesPage() {
           <Select value={selectedRegion} onValueChange={(v) => setSelectedRegion(v as PhilippineRegion | "all")}>
             <SelectTrigger className="w-full sm:w-48" data-testid="select-region-filter">
               <MapPin className="h-4 w-4 mr-2 text-muted-foreground" />
-              <SelectValue placeholder="Filter by region" />
+              <SelectValue placeholder={t("Filter by region")} />
             </SelectTrigger>
             <SelectContent className="max-h-[200px] shadow-xl duration-300">
-              <SelectItem value="all">All Regions</SelectItem>
+              <SelectItem value="all">{t("All Regions")}</SelectItem>
               {philippineRegions.map((region) => (
                 <SelectItem key={region} value={region}>
                   {region}
@@ -223,23 +225,23 @@ export default function ResourcesPage() {
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           <TabsList className="flex flex-wrap h-auto gap-2 bg-transparent p-0">
             <TabsTrigger value="all" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground" data-testid="tab-all">
-              All
+              {t("All")}
             </TabsTrigger>
             <TabsTrigger value="legal_aid" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground" data-testid="tab-legal">
               <Scale className="h-4 w-4 mr-1" />
-              Legal Aid
+              {t("Legal Aid")}
             </TabsTrigger>
             <TabsTrigger value="mental_health" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground" data-testid="tab-mental">
               <Heart className="h-4 w-4 mr-1" />
-              Mental Health
+              {t("Mental Health")}
             </TabsTrigger>
             <TabsTrigger value="government" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground" data-testid="tab-government">
               <Building className="h-4 w-4 mr-1" />
-              Government
+              {t("Government")}
             </TabsTrigger>
             <TabsTrigger value="platform_help" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground" data-testid="tab-platform">
               <Smartphone className="h-4 w-4 mr-1" />
-              Platform Help
+              {t("Platform Help")}
             </TabsTrigger>
           </TabsList>
 
@@ -247,15 +249,15 @@ export default function ResourcesPage() {
             {filteredResources.length === 0 ? (
               <div className="text-center py-12">
                 <Search className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-                <h3 className="text-lg font-medium mb-2">No resources found</h3>
+                <h3 className="text-lg font-medium mb-2">{t("No resources found")}</h3>
                 <p className="text-muted-foreground">
-                  Try adjusting your search or filters
+                  {t("Try adjusting your search or filters")}
                 </p>
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredResources.map((resource) => (
-                  <ResourceCard key={resource.id} resource={resource} />
+                  <ResourceCard key={resource.id} resource={resource} t={t} />
                 ))}
               </div>
             )}
