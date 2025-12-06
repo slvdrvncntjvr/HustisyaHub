@@ -74,7 +74,7 @@ export default function TosDecoderPage() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "x-api-key": API_KEY, // Use your header auth
+          "x_api_key": API_KEY, // Use your header auth
         },
         body: JSON.stringify(data),
       });
