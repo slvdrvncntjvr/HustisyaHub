@@ -1,18 +1,25 @@
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { Shield, Menu, X, FileText, Search, BookOpen, Phone } from "lucide-react";
+import { Shield, Menu, X, FileText, Search, BookOpen, Phone, ChevronDown, Wrench, GraduationCap } from "lucide-react";
 import { useState } from "react";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 const navLinks = [
-  { href: "/report", label: "Report", icon: FileText },
-  { href: "/tos-decoder", label: "ToS Decoder", icon: Search },
-  { href: "/resources", label: "Resources", icon: BookOpen },
+  { href: "/learn", label: "Learn", icon: GraduationCap },
+  { href: "/resources", label: "Directory and Contacts", icon: BookOpen },
 ];
 
 export function Header() {
   const [location] = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [toolsOpen, setToolsOpen] = useState(false);
+
+  const isToolsActive = location === "/report" || location === "/tos-decoder";
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -26,6 +33,44 @@ export function Header() {
           </Link>
 
           <nav className="hidden md:flex items-center gap-1">
+            <Popover open={toolsOpen} onOpenChange={setToolsOpen}>
+              <PopoverTrigger asChild>
+                <Button
+                  variant={isToolsActive ? "secondary" : "ghost"}
+                  className="gap-2 cursor-pointer"
+                  data-testid="nav-tools"
+                >
+                  <Wrench className="h-4 w-4" />
+                  Tools
+                  <ChevronDown className={`h-4 w-4 transition-transform ${toolsOpen ? "rotate-180" : ""}`} />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-56 p-2" align="start">
+                <div className="grid gap-1">
+                  <Link href="/report">
+                    <Button
+                      variant={location === "/report" ? "secondary" : "ghost"}
+                      className="w-full justify-start gap-2 cursor-pointer"
+                      onClick={() => setToolsOpen(false)}
+                    >
+                      <FileText className="h-4 w-4" />
+                      Create Report
+                    </Button>
+                  </Link>
+                  <Link href="/tos-decoder">
+                    <Button
+                      variant={location === "/tos-decoder" ? "secondary" : "ghost"}
+                      className="w-full justify-start gap-2 cursor-pointer"
+                      onClick={() => setToolsOpen(false)}
+                    >
+                      <Search className="h-4 w-4" />
+                      ToS Decoder
+                    </Button>
+                  </Link>
+                </div>
+              </PopoverContent>
+            </Popover>
+
             {navLinks.map((link) => {
               const Icon = link.icon;
               const isActive = location === link.href;
@@ -68,6 +113,28 @@ export function Header() {
       {mobileMenuOpen && (
         <div className="md:hidden border-t bg-background">
           <nav className="flex flex-col p-4 gap-2">
+            <div className="px-2 py-1.5 text-sm font-semibold text-muted-foreground">Tools</div>
+            <Link href="/report" onClick={() => setMobileMenuOpen(false)} className="cursor-pointer">
+              <Button
+                variant={location === "/report" ? "secondary" : "ghost"}
+                className="w-full justify-start gap-2 cursor-pointer pl-6"
+              >
+                <FileText className="h-4 w-4" />
+                Create Report
+              </Button>
+            </Link>
+            <Link href="/tos-decoder" onClick={() => setMobileMenuOpen(false)} className="cursor-pointer">
+              <Button
+                variant={location === "/tos-decoder" ? "secondary" : "ghost"}
+                className="w-full justify-start gap-2 cursor-pointer pl-6"
+              >
+                <Search className="h-4 w-4" />
+                ToS Decoder
+              </Button>
+            </Link>
+            
+            <div className="my-1 border-t" />
+            
             {navLinks.map((link) => {
               const Icon = link.icon;
               const isActive = location === link.href;

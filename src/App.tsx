@@ -10,6 +10,7 @@ import Home from "@/pages/home";
 import ReportPage from "@/pages/report";
 import TosDecoderPage from "@/pages/tos-decoder";
 import ResourcesPage from "@/pages/resources";
+import LearnPage from "@/pages/learn";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -19,6 +20,7 @@ function Router() {
       <Route path="/report" component={ReportPage} />
       <Route path="/tos-decoder" component={TosDecoderPage} />
       <Route path="/resources" component={ResourcesPage} />
+      <Route path="/learn" component={LearnPage} />
       <Route component={NotFound} />
     </Switch>
   );

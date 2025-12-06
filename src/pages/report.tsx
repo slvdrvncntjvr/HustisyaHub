@@ -74,7 +74,7 @@ const platformInfo: Record<Platform, { icon: React.ElementType; label: string; c
   facebook: { icon: SiFacebook, label: "Facebook", color: "text-blue-600" },
   instagram: { icon: SiInstagram, label: "Instagram", color: "text-pink-600" },
   tiktok: { icon: SiTiktok, label: "TikTok", color: "text-foreground" },
-  twitter: { icon: Ban, label: "X (Twitter)", color: "text-foreground" },
+  twitter: { icon: Ban, label: "X (Twitter)", color: "text-foregrou   nd" },
   discord: { icon: SiDiscord, label: "Discord", color: "text-indigo-500" },
   messenger: { icon: SiFacebook, label: "Messenger", color: "text-blue-500" },
   telegram: { icon: SiTelegram, label: "Telegram", color: "text-sky-500" },
